@@ -107,7 +107,6 @@ if(interaction.isCommand()) {
 //--// ABOUTBOT //--//
 if(interaction.customId == "select-aboutbot") {
     const aboutbot = require("./commands/aboutbot.js")
-      console.log(aboutbot.embed)
         await interaction.values.forEach(async value => {
           if(value == 'aboutbot_staff_embed') {
             /*if(!interaction.member.roles.cache.some(r => r.id === `${staff_member_role_id}`) || !interaction.member.roles.cache.some(r => r.id === `${author_role_id}`))
