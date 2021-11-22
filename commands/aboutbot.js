@@ -1,16 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 //
-const Discord = require("discord.js");
-const { Client, Intents, Collection } = require("discord.js");
-const { MessageEmbed, version: djsversion } = require('discord.js');
-const client = new Client({
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES
-    ]
-});
-//
 const bot_name = 'Stop The Trollers'
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
 const bot_version = 'v1.5' // AKTUÁLNA VERZIA
@@ -49,8 +39,9 @@ module.exports = {
         //
         const member = interaction.member
         const ping_ping = `${Date.now() - interaction.createdTimestamp}`
+        const info = interaction.client.application.partial ? await interaction.client.application.fetch() : interaction.client.application;
         //
-        const d = moment.duration(interaction.client.uptime);
+        const d = moment.duration(info.uptime);
         const days = (d.days() == 1) ? `${d.days()} day` : `${d.days()}d`;
         const hours = (d.hours() == 1) ? `${d.hours()} hour` : `${d.hours()}h`;
         const minutes = (d.minutes() == 1) ? `${d.minutes()} minute` : `${d.minutes()}m`;
@@ -70,7 +61,9 @@ module.exports = {
             ping.shift();
             ping.push("<:stt_connection_bad:896337630520836136>")
           }
-    const index = require("/home/STT/bot-v13/index.js")
+
+      const index = require("../")
+
       var embed2 = new Discord.MessageEmbed()
       .setColor(bot_color)
         .setAuthor('ABOUT THE BOT', 'https://cdn.discordapp.com/emojis/894863362779906068.png?size=96')
