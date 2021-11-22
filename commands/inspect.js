@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageActionRow, MessageButton } = require('discord.js');
-const Discord = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 //
 const axios = require("axios")
 //
@@ -53,13 +52,13 @@ module.exports = {
         //
         if(!res2) return;0
         if(!res.data[0]) {
-    const inspect_false_embed = new Discord.MessageEmbed()
+    const inspect_false_embed = new MessageEmbed()
         .setColor(`GREEN`)
         .setThumbnail("https://cdn.discordapp.com/avatars/" + res2.data.id + "/" + res2.data.avatar + ".png")
-        .setAuthor('INSPECT USER', "https://cdn.discordapp.com/emojis/894982664820506644.png?size=96")
-        .setDescription("**╚ Not Blacklisted.**")
-        .addField(`<:stt_ticket:894863362503110678> User Tag`, res2.data.username + '#' + res2.data.discriminator , false)
-        .addField(`<:stt_id:903032294590255106>User ID`, "||" + res2.data.id + "||", false)
+        .setAuthor('INSPECTED USER is', "https://cdn.discordapp.com/emojis/894982664820506644.png?size=96")
+        .setDescription("**╚ isn't Blacklisted.**")
+        .addField(`<:stt_ticket:894863362503110678> User Tag`, res2.data.username + '#' + res2.data.discriminator , true)
+        .addField(`<:stt_id:903032294590255106>User ID`, "||" + res2.data.id + "||", true)
         .setFooter(`${bot_name}`, `${bot_logo}` )
         .setTimestamp()
         //
@@ -71,11 +70,11 @@ module.exports = {
         return;
         }
         if(res.data[0].status == "accepted") {
-        const inspect_true_embed = new Discord.MessageEmbed()
+        const inspect_true_embed = new MessageEmbed()
         .setColor('RED')
           .setThumbnail("https://cdn.discordapp.com/avatars/" + res2.data.id + "/" + res2.data.avatar + ".png")
-          .setAuthor('INSPECT USER', "https://cdn.discordapp.com/emojis/894982664447209554.png?size=80")
-          .setDescription("**╚ Blacklisted !**")
+          .setAuthor('INSPECTED USER', "https://cdn.discordapp.com/emojis/894982664447209554.png?size=80")
+          .setDescription("**╚ is Blacklisted !**")
           .addField(`<:stt_ticket:894863362503110678> User Tag`, res.data[0].reportedUser, true)
           .addField(`<:stt_id:903032294590255106> User ID`, "||" + res.data[0].reportedUserID + "||", true)
           .addField(`<:stt_shop:896337630378205196> Reason`, res.data[0].reportMessage + '\n \n' + res.data[0].reportProof, false)
@@ -89,7 +88,7 @@ module.exports = {
         })
         return;
     } else {
-      const inspect_false_embed = new Discord.MessageEmbed()
+      const inspect_false_embed = new MessageEmbed()
         .setColor(`GREEN`)
         .setThumbnail("https://cdn.discordapp.com/avatars/" + res2.data.id + "/" + res2.data.avatar + ".png")
         .setAuthor('INSPECT USER', "https://cdn.discordapp.com/emojis/894982664820506644.png?size=96")

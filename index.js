@@ -3,10 +3,6 @@
 //
 //const Discord = require("discord.js");
 const config = require("./Data/config.json");
-const prefix = "!"
-const bot_name = 'Stop The Trollers'
-const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
-const bot_version = 'v1.5' // AKTUÁLNA VERZIA
 const bot_color = '0x370595';
 //
 const staff_member_role_id = '603505971507101698';
