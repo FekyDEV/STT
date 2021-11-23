@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const Discord = require("discord.js");
+const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 //
 const bot_name = 'Stop The Trollers'
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
@@ -205,7 +204,7 @@ if(res.data[0]) {
        })
        .then(function (res2) {    
 
-        var embed2 = new Discord.MessageEmbed()
+        var embed2 = new MessageEmbed()
      .setColor(bot_color)
     .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      //.setAuthor(interaction.member.tag, interaction.member.displayAvatarURL( { dynamic:true }))
@@ -221,11 +220,14 @@ if(res.data[0]) {
      .setImage('https://i.imgur.com/TlNvTNW.png')
      .setTimestamp()
     //
-    var embed = new Discord.MessageEmbed()
+    var embed = new MessageEmbed()
       .setColor(bot_color)
       .setTitle("<:stt_shop:896337630378205196> Your STT Admin Profile")
       .addField("<:stt_ticket:894863362503110678> Username", res.data[0].user_name, true)
-      .addField("<:stt_id:903032294590255106> User ID", res.data[0].user_id, true)
+      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].user_id + "||", true)
+      .addField("<:stt_shop:896337630378205196> Total Reports", '0', )
+      .addField("<:stt_accepted:905529657217146950> Approved Reports", '0', true)
+      .addField("<:stt_denied:906514271217811467> Denied Reports", '0', true)
     //
     const menu = new MessageActionRow()
     .addComponents(
@@ -234,13 +236,16 @@ if(res.data[0]) {
             .setPlaceholder('Select a page')
             .addOptions([
                 {
-                    label: 'Classic Page', // NAZOV
-                    description: 'Profile page for everyone.', // POPIS
-                    value: 'profile_classic_embed', // HODNOTA
+                    label: 'Classic Page [Current Page]', 
+                    emoji: '894987766012706877',
+                    description: 'Profile page for everyone.', 
+                    value: 'profile_classic_embed', 
+                    default: true, 
                 },
                 {
                     label: 'Admin Page',
-                    description: 'Profile page for BOT Staffs',
+                    emoji: '894863362658283550',
+                    description: 'Profile page for BOT Staff.',
                     value: 'profile_staff_embed',
                 },
             ]),
