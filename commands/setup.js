@@ -23,6 +23,7 @@ const bot_color = '0x370595';
 /////
 module.exports = {
     data: new SlashCommandBuilder()
+    
         .setName("setup")
         .setDescription("Display Setup Page.")
         .addSubcommand(subcommand =>
@@ -135,9 +136,11 @@ new MessageButton()
           //components:  [ row ],
           ephemeral: false
       })
-  })
+    })
 }
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
+axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
+  .then((res_server) => { 
   if(interaction.options.getSubcommand() === 'log') {
     const log_chnl = interaction.options.getChannel('log_channel')
     if(log_chnl.type !== 'GUILD_TEXT') return interaction.reply({ content: 'You have to choose **Text Channel** !', ephemeral: true })
@@ -168,6 +171,8 @@ new MessageButton()
     }
 ////-------////
     if(interaction.options.getSubcommand() === 'autoban') {  
+      if(res_server.data[0].log_status == false) return interaction.reply({ content: 'You need to setup **log channel** first !', ephemeral: true})
+      if(res_server.data[0].autorole == true) return interaction.reply({ content: 'You need to disable auto-role first!', ephemeral: true})
       if(interaction.options.getBoolean('autoban_opt') == true) {
       console.log("NEW ACTIVITY: AUTOBAN SUBCOMMAND !")
       axios({
@@ -200,6 +205,8 @@ new MessageButton()
       }
 ////-------////
 if(interaction.options.getSubcommand() === 'autorole') { 
+  if(res_server.data[0].log_status == false) return interaction.reply({ content: 'You need to setup **log channel** first !', ephemeral: true})
+  if(res_server.data[0].autoban == true) return interaction.reply({ content: 'You need to disable auto-ban first!', ephemeral: true})
   if(interaction.options.getBoolean('enable') == true) {
   if(interaction.options.getRole('role')) {
     const rola = interaction.options.getRole('role')
@@ -252,6 +259,7 @@ return;
 }
 /////////////////////////////////
   if(interaction.options.getSubcommand() === 'alt') {  
+    if(res_server.data[0].log_status == false) return interaction.reply({ content: 'You need to setup **log channel** first !', ephemeral: true})
     if(interaction.options.getBoolean('enable') == true) {
     if(interaction.options.getInteger('alt_days') <= 365) {
       const dni = interaction.options.getInteger('alt_days')
@@ -288,6 +296,7 @@ return;
   return;
   }
 }
+  })
 }
 
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
