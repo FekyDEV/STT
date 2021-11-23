@@ -70,7 +70,6 @@ module.exports = {
               return;
           } else {
           guild.systemChannel.send({ content: `<@${guild.ownerId}>`, embeds: [welcome_embed, welcome__permissions_advice_embed, welcome__support_server_embed]});
-
           //
          axios.post('https://canary.discord.com/api/webhooks/912699228810272788/_oe9p6G6KxI64vN00gG6_t5AbENpTQ_5kU9KY2MKrCIYIDC9Ua91tZuJBaujXQwae6o0', {
             username: "STT | LOG",
