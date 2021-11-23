@@ -24,7 +24,8 @@ module.exports = {
                 .setPlaceholder('Select a page')
                 .addOptions([
                     {
-                        label: 'Classic Page [Current page]', 
+                        label: 'Classic Page [Current page]',
+                        default: true, 
                         emoji: '894987766012706877',
                         description: 'About Bot page for everyone.', 
                         value: 'aboutbot_classic_embed', 

@@ -36,6 +36,17 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 //
+// ? Event Handler
+const eventFiles = fs.readdirSync(__dirname + '/events').filter(file => file.endsWith('.js'));
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args, client));
+	}
+}
+//
 
 client.on("ready", () => {
     console.log("Bot is online!")
