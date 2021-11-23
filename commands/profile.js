@@ -41,7 +41,7 @@ if(!res.data[0]) {
             user_name: interaction.member.tag,
             bdg_early: true
           })    
-          const profile_first_embed = new Discord.MessageEmbed()
+          const profile_first_embed = new MessageEmbed()
           .setColor(bot_color)
           .setDescription("**I see you here for the first time !** \n - Your profile will be ready in a few seconds...")
           .setFooter(bot_name, bot_logo)
