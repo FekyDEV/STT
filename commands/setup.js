@@ -45,15 +45,15 @@ module.exports = {
           subcommand
             .setName('autorole')
             .setDescription('Setup Auto Role for Blacklisted users.')
-            .addBooleanOption(option => option.setName('autorole_rozhodnutie').setRequired(true).setDescription('Enable or Disable this function ?'))
-            .addRoleOption(option => option.setName('autorole_opt').setRequired(false).setDescription('Select a Role for Blacklisted users.')))            
+            .addBooleanOption(option => option.setName('enable').setRequired(true).setDescription('Enable or Disable this function ?'))
+            .addRoleOption(option => option.setName('role').setRequired(false).setDescription('Select a Role for Blacklisted users.')))            
           //
         .addSubcommand(subcommand =>
           subcommand
             .setName('alt')
             .setDescription('Setup ALT Detection.')
-            .addBooleanOption(option => option.setName('alt_rozhodnutie').setRequired(true).setDescription('Enable or Disable this function ?'))
-            .addIntegerOption(option => option.setName('alt_opt').setRequired(false).setDescription('Select a days (0-365)'))),   
+            .addBooleanOption(option => option.setName('enable').setRequired(true).setDescription('Enable or Disable this function ?'))
+            .addIntegerOption(option => option.setName('alt_days').setRequired(false).setDescription('Select a days (0-365)'))),   
 
     async execute(interaction) {
     
@@ -77,17 +77,24 @@ if(interaction.options.getSubcommand() === 'info') {
     const alt_status_emoji = res.data[0].alt_emoji
       //console.log("Alt status:" + alt_status_emoji)          
     //
+
+    let log_status = (res.data[0].log_status == true) ? `> __Status:__  <:Yes:871419569426804796> | <#${res.data[0].log_channel}>`:'> __Status:__  <:No:871419569472933918>'
+    let autorole_status = (res.data[0].autorole == true) ? `> __Status:__  <:Yes:871419569426804796> | <@&${res.data[0].autorole_role}>`:'> __Status:__  <:No:871419569472933918>'
+    let autoban_status = (res.data[0].autoban == true) ? `> __Status:__  <:Yes:871419569426804796>`:'> __Status:__  <:No:871419569472933918>'
+    let urlblocker_status = (res.data[0].url_remover == true) ? `> __Status:__  <:Yes:871419569426804796>`:'> __Status:__  <:No:871419569472933918>'
+    let alt_status = (res.data[0].alt_detection == true) ? `> __Status:__  <:Yes:871419569426804796> | ${res.data[0].alt_days} (days)`:'> __Status:__  <:No:871419569472933918>'
+    //
   const embed = new Discord.MessageEmbed()
   .setAuthor(`${interaction.user.tag}` , interaction.user.displayAvatarURL({ dynamic: true }))
   .setColor(`${bot_color}`)
   .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
   .setTitle(`<:stt_settings:896337630462115871>  ${interaction.guild.name}'s SETUP`)
-  .setDescription('`Setup page for server owner.` \n\n <:Yes:871419569426804796> - Enabled \n <:No:871419569472933918> - Disabled \n \u200B \n<:stt_premium:894863362251427881> **Premium:** <:Yes:871419569426804796> \n\u200B')
-  .addField(`Log Channel [ Use /setup log ... ]`, `> __Status:__ ${log_status_emoji}`, false)
-  .addField(`Autorole [ Use /setup autorole ... ]`, `> __Status:__ ${autorole_status_emoji}`, false)
-  .addField(`Autoban [ Use /setup autoban ... ]`, `> __Status:__ ${autoban_status_emoji}`, false)
-  .addField(`URL Blocker <:stt_soon:899704071508877313> [ Use /setup url ... ]` , `> __Status:__ ${urlblocker_status_emoji}`, false)
-  .addField(`ALT Detection [ Use /setup alt ... ]`, `> __Status:__ ${alt_status_emoji}`, false)
+  .setDescription('`Setup page for server owner.` \n\n <:Yes:871419569426804796> - Enabled \n <:No:871419569472933918> - Disabled \n \u200B \n<:stt_premium:894863362251427881> **Premium:** SOON \n\u200B')
+  .addField(`Log Channel [ Use /setup log ... ]`, log_status, false)
+  .addField(`Autorole [ Use /setup autorole ... ]`, autorole_status , false)
+  .addField(`Autoban [ Use /setup autoban ... ]`, autoban_status, false)
+  .addField(`URL Blocker <:stt_soon:899704071508877313> [ Use /setup url ... ]` , urlblocker_status, false)
+  .addField(`ALT Detection [ Use /setup alt ... ]`, alt_status, false)
   .setFooter(`${interaction.guild.id} | ${interaction.guild.name}`, `${bot_logo}` )
   .setImage('https://i.imgur.com/TlNvTNW.png')
   .setTimestamp()
@@ -133,7 +140,7 @@ new MessageButton()
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
   if(interaction.options.getSubcommand() === 'log') {
     const log_chnl = interaction.options.getChannel('log_channel')
-    if(log_chnl.type !== 'GUILD_TEXT') return  interaction.reply({ content: 'You have to choose **Text Channel** !', ephemeral: true })
+    if(log_chnl.type !== 'GUILD_TEXT') return interaction.reply({ content: 'You have to choose **Text Channel** !', ephemeral: true })
 
     console.log("NEW ACTIVITY: LOG SUBCOMMAND !")
     //console.log(log_chnl.type)
@@ -142,7 +149,7 @@ new MessageButton()
       method: 'patch',
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
-       { "propName": "log_status", "value": "enable" },
+       { "propName": "log_status", "value": true },
        { "propName": "log_channel", "value": log_chnl.id },
        { "propName": "log_emoji", "value": "<:Yes:871419569426804796>" }]})
        //
@@ -167,12 +174,12 @@ new MessageButton()
         method: 'patch',
         url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
         data: [    
-          { "propName": "autoban", "value": "enable" },
+          { "propName": "autoban", "value": true },
           { "propName": "autoban_emoji", "value": "<:Yes:871419569426804796>" }
         ]})
          //
          
-     interaction.reply({ content: 'Autoban has been successfully **Enabled** !', ephemeral: true })
+     interaction.reply({ content: ':white_check_mark: Autoban has been successfully **Enabled** !', ephemeral: true })
     //
     return;
   } else {
@@ -181,7 +188,7 @@ new MessageButton()
       method: 'patch',
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
-        { "propName": "autoban", "value": "disable" },
+        { "propName": "autoban", "value": false },
         { "propName": "autoban_emoji", "value": "<:No:871419569472933918>" }
       ]})
        //
@@ -193,36 +200,36 @@ new MessageButton()
       }
 ////-------////
 if(interaction.options.getSubcommand() === 'autorole') { 
-  if(interaction.options.getBoolean('autorole_rozhodnutie') == true) {
-  if(interaction.options.getRole('autorole_opt')) {
-    const rola = interaction.options.getRole('autorole_opt')
+  if(interaction.options.getBoolean('enable') == true) {
+  if(interaction.options.getRole('role')) {
+    const rola = interaction.options.getRole('role')
+      if(rola.permissions.toArray().includes('ADMINISTRATOR')) return interaction.reply({ content: 'This role have **ADMINISTRATOR** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_GUILD')) return interaction.reply({ content: 'This role have **MANAGE_GUILD** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_MESSAGES')) return interaction.reply({ content: 'This role have **MANAGE_MESSAGES** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('BAN_MEMBERS')) return interaction.reply({ content: 'This role have **BAN_MEMBERS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('KICK_MEMBERS')) return interaction.reply({ content: 'This role have **KICK_MEMBERS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_CHANNELS')) return interaction.reply({ content: 'This role have **MANAGE_CHANNELS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_ROLES')) return interaction.reply({ content: 'This role have **MANAGE_ROLES** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_NICKNAMES')) return interaction.reply({ content: 'This role have **MANAGE_NICKNAMES** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_WEBHOOKS')) return interaction.reply({ content: 'This role have **MANAGE_WEBHOOKS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MANAGE_THREADS')) return interaction.reply({ content: 'This role have **MANAGE_THREADS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('VIEW_GUILD_INSIGHTS')) return interaction.reply({ content: 'This role have **VIEW_GUILD_INSIGHTS** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('VIEW_AUDIT_LOG')) return interaction.reply({ content: 'This role have **VIEW_AUDIT_LOG** permissions !', ephemeral: true })
+      if(rola.permissions.toArray().includes('MENTION_EVERYONE')) return interaction.reply({ content: 'This role have **MENTION_EVERYONE** permissions !', ephemeral: true })
+    //
     //console.log(rola.permissions.toArray())
   console.log("NEW ACTIVITY: AUTOROLE SUBCOMMAND !")
   axios({
     method: 'patch',
     url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
     data: [    
-      { "propName": "autorole", "value": "enable" },
+      { "propName": "autorole", "value": true },
       { "propName": "autorole_emoji", "value": "<:Yes:871419569426804796>" },
       { "propName": "autorole_role", "value": rola.id }]
     })
      //
-     if(rola.permissions.toArray().includes('ADMINISTRATOR')) return interaction.reply({ content: 'This role have **ADMINISTRATOR** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_GUILD')) return interaction.reply({ content: 'This role have **MANAGE_GUILD** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_MESSAGES')) return interaction.reply({ content: 'This role have **MANAGE_MESSAGES** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('BAN_MEMBERS')) return interaction.reply({ content: 'This role have **BAN_MEMBERS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('KICK_MEMBERS')) return interaction.reply({ content: 'This role have **KICK_MEMBERS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_CHANNELS')) return interaction.reply({ content: 'This role have **MANAGE_CHANNELS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_ROLES')) return interaction.reply({ content: 'This role have **MANAGE_ROLES** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_NICKNAMES')) return interaction.reply({ content: 'This role have **MANAGE_NICKNAMES** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_WEBHOOKS')) return interaction.reply({ content: 'This role have **MANAGE_WEBHOOKS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MANAGE_THREADS')) return interaction.reply({ content: 'This role have **MANAGE_THREADS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('VIEW_GUILD_INSIGHTS')) return interaction.reply({ content: 'This role have **VIEW_GUILD_INSIGHTS** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('VIEW_AUDIT_LOG')) return interaction.reply({ content: 'This role have **VIEW_AUDIT_LOG** permissions !', ephemeral: true })
-     if(rola.permissions.toArray().includes('MENTION_EVERYONE')) return interaction.reply({ content: 'This role have **MENTION_EVERYONE** permissions !', ephemeral: true })
 
-
- interaction.reply({ content: 'Autorole has been successfully **Enabled** !', ephemeral: true })
+ interaction.reply({ content: ':white_check_mark: Autorole has been successfully **Enabled** !', ephemeral: true })
 //
 return;
 
@@ -233,7 +240,7 @@ return;
     method: 'patch',
     url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
     data: [    
-      { "propName": "autorole", "value": "disable" },
+      { "propName": "autorole", "value": false },
       { "propName": "autorole_emoji", "value": "<:No:871419569472933918>" },
       { "propName": "autorole_role", "value": "none" }]
     })
@@ -245,21 +252,21 @@ return;
 }
 /////////////////////////////////
   if(interaction.options.getSubcommand() === 'alt') {  
-    if(interaction.options.getBoolean('autorole_rozhodnutie') == true) {
-    if(interaction.options.getInteger('alt_opt') <= 365) {
-      const dni = interaction.options.getInteger('alt_opt')
+    if(interaction.options.getBoolean('enable') == true) {
+    if(interaction.options.getInteger('alt_days') <= 365) {
+      const dni = interaction.options.getInteger('alt_days')
       console.log(dni)
     console.log("NEW ACTIVITY: ALT DETECTION SUBCOMMAND !")
     axios({
       method: 'patch',
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
-       { "propName": "alt_detection", "value": "enable" },
+       { "propName": "alt_detection", "value": true },
        { "propName": "alt_emoji", "value": "<:Yes:871419569426804796>" },
        { "propName": "alt_days", "value": dni }]})
        //
        
-   interaction.reply({ content: 'Autoban has been successfully **Enabled** !', ephemeral: true })
+   interaction.reply({ content: ':white_check_mark: Alt Detection has been successfully **Enabled** !', ephemeral: true })
   //
   return;
 } else {
@@ -271,7 +278,7 @@ return;
       method: 'patch',
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
-       { "propName": "alt_detection", "value": "disable" },
+       { "propName": "alt_detection", "value": false },
        { "propName": "alt_emoji", "value": "<:No:871419569472933918>" },
        { "propName": "alt_days", "value": 0 }]})
        //
@@ -403,7 +410,7 @@ return;
         method: 'patch',
         url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
         data: [    
-         { "propName": "log_status", "value": "enable" },
+         { "propName": "log_status", "value": true },
          { "propName": "log_emoji", "value": "<:Yes:871419569426804796>" }]})
     await interaction.reply({ content: 'LOG was successfully **Enabled** !' })
 
