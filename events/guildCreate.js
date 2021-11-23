@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { MessageEmbed, Client } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 //
 const bot_color = '0x370595';
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
@@ -60,8 +60,7 @@ module.exports = {
                 url: 'http://95.156.227.203:5000/servers/',
                 data: {
                   sid: guild.id,
-                  owner_id: guild.ownerId,
-                  owner_tag: res.data.username + "#" + res.data.discriminator
+                  owner_id: guild.ownerId
                 }})
                 console.log("Saving data success !")
                 } catch (err) {
@@ -82,8 +81,7 @@ module.exports = {
               url: 'http://95.156.227.203:5000/servers/',
               data: {
                 sid: guild.id,
-                owner_id: guild.ownerId,
-                owner_tag: res.data.username + "#" + res.data.discriminator
+                owner_id: guild.ownerId
               }})
               console.log("Saving data success !")
               } catch (err) {
