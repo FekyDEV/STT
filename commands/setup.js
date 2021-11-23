@@ -1,17 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageActionRow, MessageButton, WebhookClient  } = require('discord.js');
-const Discord = require("discord.js");
-const { Client, Intents, Collection } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
 //
 const config = require("../Data/config.json");
-//
-const client = new Client({
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES
-    ]
-});
 //
 const axios = require("axios")
 const moment = require('moment');
@@ -56,28 +46,14 @@ module.exports = {
             .addBooleanOption(option => option.setName('enable').setRequired(true).setDescription('Enable or Disable this function ?'))
             .addIntegerOption(option => option.setName('alt_days').setRequired(false).setDescription('Select a days (0-365)'))),   
 
-    async execute(interaction) {
+    async execute(interaction, client) {
+      if(!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return interaction.reply({ content: "You do not have the following permissions:\n\`MANAGE_SERVER\`", ephemeral: true });
+
     
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
 if(interaction.options.getSubcommand() === 'info') {
   axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
   .then((res) => { 
-  //
-  const log_status_emoji = res.data[0].log_emoji 
-      //console.log("Log status:" + log_status_emoji)
-    //
-    const urlblocker_status_emoji = res.data[0].url_emoji
-      //console.log("URL Remover status:" + urlblocker_status_emoji)
-    //
-    const autorole_status_emoji = res.data[0].autorole_emoji
-      //console.log("Autorole status:" + autorole_status_emoji)
-    //
-    const autoban_status_emoji = res.data[0].autoban_emoji
-      //console.log("Autoban status:" + autoban_status_emoji)
-    //
-    const alt_status_emoji = res.data[0].alt_emoji
-      //console.log("Alt status:" + alt_status_emoji)          
-    //
 
     let log_status = (res.data[0].log_status == true) ? `> __Status:__  <:Yes:871419569426804796> | <#${res.data[0].log_channel}>`:'> __Status:__  <:No:871419569472933918>'
     let autorole_status = (res.data[0].autorole == true) ? `> __Status:__  <:Yes:871419569426804796> | <@&${res.data[0].autorole_role}>`:'> __Status:__  <:No:871419569472933918>'
@@ -85,7 +61,7 @@ if(interaction.options.getSubcommand() === 'info') {
     let urlblocker_status = (res.data[0].url_remover == true) ? `> __Status:__  <:Yes:871419569426804796>`:'> __Status:__  <:No:871419569472933918>'
     let alt_status = (res.data[0].alt_detection == true) ? `> __Status:__  <:Yes:871419569426804796> | ${res.data[0].alt_days} (days)`:'> __Status:__  <:No:871419569472933918>'
     //
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
   .setAuthor(`${interaction.user.tag}` , interaction.user.displayAvatarURL({ dynamic: true }))
   .setColor(`${bot_color}`)
   .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
@@ -100,40 +76,8 @@ if(interaction.options.getSubcommand() === 'info') {
   .setImage('https://i.imgur.com/TlNvTNW.png')
   .setTimestamp()
   //
-
-const row = new MessageActionRow()
-.addComponents(
-  new MessageButton()
-    .setCustomId('log_button')
-    .setLabel('Log')
-    .setStyle('PRIMARY'),
-//
-new MessageButton()
-    .setCustomId('url_button')
-    .setLabel('URL Blocker')
-    .setStyle('PRIMARY')
-    .setDisabled(true),
-//
-new MessageButton()
-    .setCustomId('autoban_button')
-    .setLabel('Auto Ban')
-    .setStyle('PRIMARY'),
-//
-new MessageButton()
-    .setCustomId('autorole_button')
-    .setLabel('Auto Role')
-    .setStyle('PRIMARY'),
-//
-new MessageButton()
-    .setCustomId('alt_button')
-    .setLabel('Alt Detection')
-    .setStyle('PRIMARY')
-)
-
-  //
       interaction.reply({
           embeds: [ embed ],
-          //components:  [ row ],
           ephemeral: false
       })
     })
@@ -153,8 +97,7 @@ axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "log_status", "value": true },
-       { "propName": "log_channel", "value": log_chnl.id },
-       { "propName": "log_emoji", "value": "<:Yes:871419569426804796>" }]})
+       { "propName": "log_channel", "value": log_chnl.id }]})
        //
        
    interaction.reply({ content: 'LOG was successfully **Enabled** !', ephemeral: true })
@@ -179,8 +122,7 @@ axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
         method: 'patch',
         url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
         data: [    
-          { "propName": "autoban", "value": true },
-          { "propName": "autoban_emoji", "value": "<:Yes:871419569426804796>" }
+          { "propName": "autoban", "value": true }
         ]})
          //
          
@@ -193,11 +135,9 @@ axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
       method: 'patch',
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
-        { "propName": "autoban", "value": false },
-        { "propName": "autoban_emoji", "value": "<:No:871419569472933918>" }
+        { "propName": "autoban", "value": false }
       ]})
        //
-       
    interaction.reply({ content: 'Autoban has been successfully **Disabled** !', ephemeral: true })
   //
   return;
@@ -231,7 +171,6 @@ if(interaction.options.getSubcommand() === 'autorole') {
     url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
     data: [    
       { "propName": "autorole", "value": true },
-      { "propName": "autorole_emoji", "value": "<:Yes:871419569426804796>" },
       { "propName": "autorole_role", "value": rola.id }]
     })
      //
@@ -248,7 +187,6 @@ return;
     url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
     data: [    
       { "propName": "autorole", "value": false },
-      { "propName": "autorole_emoji", "value": "<:No:871419569472933918>" },
       { "propName": "autorole_role", "value": "none" }]
     })
      //
@@ -270,7 +208,6 @@ return;
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "alt_detection", "value": true },
-       { "propName": "alt_emoji", "value": "<:Yes:871419569426804796>" },
        { "propName": "alt_days", "value": dni }]})
        //
        
@@ -287,7 +224,6 @@ return;
       url: 'http://95.156.227.203:5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "alt_detection", "value": false },
-       { "propName": "alt_emoji", "value": "<:No:871419569472933918>" },
        { "propName": "alt_days", "value": 0 }]})
        //
        
@@ -301,4 +237,3 @@ return;
     
   }
 
-client.login(config.token);
