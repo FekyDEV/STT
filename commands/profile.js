@@ -25,7 +25,7 @@ let headersList = {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions = {
-         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+         url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
          method: "GET",
          headers: headersList,
        }
@@ -37,10 +37,12 @@ let headersList = {
 if(!res.data[0]) {
           //
           axios.post('http://95.156.227.203:7000/users/', {
-            user_id: interaction.member.id,
-            user_name: interaction.member.tag,
+            id: interaction.user.id,
+            username: interaction.user.tag,
             bdg_early: true
-          })    
+          })   
+          console.log("Sended !")
+          // 
           const profile_first_embed = new MessageEmbed()
           .setColor(bot_color)
           .setDescription("**I see you here for the first time !** \n - Your profile will be ready in a few seconds...")
@@ -168,7 +170,7 @@ if(res.data[0]) {
     if(res.data[0].xp >= 200) {
       axios({
         method: 'patch',
-        url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+        url: 'http://95.156.227.203:7000/users/id/' + interaction.member.id,
         data: [    
                 { "propName": "xp", "value": 200 }
               ] 
@@ -194,7 +196,7 @@ if(res.data[0]) {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions2 = {
-         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+         url: 'http://95.156.227.203:7000/users/id/' + interaction.member.id,
          method: "GET",
          headers: headersList2,
        }
@@ -209,8 +211,8 @@ if(res.data[0]) {
     .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      //.setAuthor(interaction.member.tag, interaction.member.displayAvatarURL( { dynamic:true }))
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
-     .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].user_name, true)
-     .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].user_id + "||", true)
+     .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username, true)
+     .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
      .addField("Badges - From STT", "> " + bdgs, false)
      .addField("Level", "> " + user_lvl, true)
      .addField("XP", "> " +  "`" + res2.data[0].xp + "`**/**200", true)
@@ -223,8 +225,8 @@ if(res.data[0]) {
     var embed = new MessageEmbed()
       .setColor(bot_color)
       .setTitle("<:stt_shop:896337630378205196> Your STT Admin Profile")
-      .addField("<:stt_ticket:894863362503110678> Username", res.data[0].user_name, true)
-      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].user_id + "||", true)
+      .addField("<:stt_ticket:894863362503110678> Username", res.data[0].username, true)
+      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
       .addField("<:stt_shop:896337630378205196> Total Reports", '0', )
       .addField("<:stt_accepted:905529657217146950> Approved Reports", '0', true)
       .addField("<:stt_denied:906514271217811467> Denied Reports", '0', true)

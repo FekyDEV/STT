@@ -53,8 +53,6 @@ client.on("ready", () => {
     //
     var guidess = client.guilds.cache.size
     var userss = client.users.cache.size.toLocaleString()
-    console.log(guidess)
-    console.log(userss)
     module.exports = Object.freeze({
         guidess: guidess,
         userss: userss
@@ -111,43 +109,49 @@ client.on("interactionCreate", async (interaction, message) => {
 if(interaction.isCommand()) {
 } else if (interaction.isSelectMenu()) {
 
-//--// ABOUTBOT //--//
+//--// ABOUTBOT //--//´
+axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+             .then((res) => { 
 if(interaction.customId == "select-aboutbot") {
-    const aboutbot = require("./commands/aboutbot.js")
-        await interaction.values.forEach(async value => {
-          if(value == 'aboutbot_staff_embed') {
-            /*if(!interaction.member.roles.cache.some(r => r.id === `${staff_member_role_id}`) || !interaction.member.roles.cache.some(r => r.id === `${author_role_id}`))
-            return interaction.reply({
-                content: "You don't have a permissions !",
-                ephemeral: true
-            });*/
+    const aboutbot = require("./commands/aboutbot.js")//
+         interaction.values.forEach(async value => {
             //
-            await interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
-            }
-            if(value == 'aboutbot_classic_embed') {
-                await interaction.update({ embeds: [ aboutbot.embed2 ]  })
-            }
+            if(value == 'aboutbot_classic_embed') return console.log("Nothing to do..-")
+            
+                if(value == 'aboutbot_staff_embed') {
+                    if(res.data[0].is_admin == false)
+                    return interaction.reply({
+                        content: "You don't have a permissions !",
+                        ephemeral: true
+                    });
+                } else {
+                    interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
+                }
+            
         });
     }
     //
 if(interaction.customId == "select-profile") {
     const profile = require("./commands/profile.js")
       console.log(profile.embed)
-        await interaction.values.forEach(async value => {
+         interaction.values.forEach(async value => {
           if(value == 'profile_staff_embed') {
-           /* if(!interaction.member.roles.cache.some(r => r.id === `603505971507101698`) || !interaction.member.roles.cache.some(r => r.id === `603505971507101698`))
-            return interaction.reply({
-                content: "You don't have a permissions !",
-                ephemeral: true
-            });*/
-            //
-            await interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
+            if(value == 'aboutbot_staff_embed') {
+             interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
             }
+            if(res.data[0].is_admin == false)
+                return interaction.reply({
+                    content: "You don't have a permissions !",
+                    ephemeral: true
+                });
+            } else {
             if(value == 'profile_classic_embed') {
-                await interaction.update({ embeds: [ profile.embed2 ]  })
+                 interaction.update({ embeds: [ profile.embed2 ]  })
+            }
             }
         });
     }
+})
 //--//  //--//
     }
     
