@@ -117,11 +117,9 @@ if(res.data[0].bdg_dev == true) {
          if(err) return;
        })
        .then(function (res2) {    
-
-        var embed2 = new MessageEmbed()
+  var embed2 = new MessageEmbed()
      .setColor(bot_color)
-    .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
-     //.setAuthor(interaction.member.tag, interaction.member.displayAvatarURL( { dynamic:true }))
+     .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
      .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username, true)
      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
@@ -172,8 +170,8 @@ if(res.data[0].bdg_dev == true) {
         embeds: [ embed2 ],
         components: [ menu ],
         ephemeral: interaction.options.getBoolean('hide')
+      })
     })
-       })
        
     }})
     }}
