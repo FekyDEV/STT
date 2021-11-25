@@ -47,12 +47,12 @@ module.exports = {
         ),   
 
     async execute(interaction) {
-        axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
      .then((res_user) => { 
          if(!res_user.data[0]) {
             axios.post('http://95.156.227.203:7000/users/', {
-                user_id: interaction.user.id,
-                user_name: interaction.user.tag,
+                id: interaction.user.id,
+                username: interaction.user.tag,
                 have_report: false,
                 xp: 0,
                 bdg_early: false
@@ -61,7 +61,7 @@ module.exports = {
          }     
         })
         
-    axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
      .then((res_user) => { 
         if(!res_user.data[0]) {
             console.log("Vytvaram nový profil !")
@@ -233,7 +233,7 @@ client.on("interactionCreate", async (interaction, message) => {
                 .then((ress) => { 
                     console.log('CONFIRM 2/4')
                     console.log(interaction.user.id)
-                    console.log('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+                    console.log('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                     console.log(ress.data[0].reportID)
                     console.log('CONFIRM 3/4')
 
@@ -291,11 +291,11 @@ client.on("interactionCreate", async (interaction, message) => {
                     components: [report_link],
                     ephemeral: true
                 })
-                axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+                axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
+                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": true }
                       ] 
@@ -327,11 +327,11 @@ client.on("interactionCreate", async (interaction, message) => {
             ephemeral: true
         })
     }) // KONIEC DELETE REPORT API
-            axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+            axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
+                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": false }
                       ] 
@@ -349,14 +349,27 @@ client.on("interactionCreate", async (interaction, message) => {
         console.log('-----------------------------------------')
         //console.log(interaction.message)
         console.log(interaction.message.content)
+        //
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        .then((res) => {   
+          axios({
+            method: 'patch',
+            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            data: [    
+                    { "propName": "admin_approved_reports", "value": res.data[0].admin_approved_reports + 1 },
+                    { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
+                  ] 
+          })      
+          console.log("Accepted Report counted !")
+        })
+        //
         axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
         .then((res_report) => { 
-
-        axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                         .then((res) => {   
                           axios({
                             method: 'patch',
-                            url: 'http://95.156.227.203:7000/users/user_id/' + res_report.data[0].userID,
+                            url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
                             data: [    
                                     { "propName": "have_report", "value": false }
                                   ] 
@@ -420,14 +433,28 @@ if(interaction.customId === "report_deny"){
     console.log('-----------------------------------------')
     //console.log(interaction.message)
     console.log(interaction.message.content)
+    //
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        .then((res) => {   
+          axios({
+            method: 'patch',
+            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            data: [    
+                    { "propName": "admin_denied_reports", "value": res.data[0].admin_denied_reports + 1 },
+                    { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
+                  ] 
+          })      
+          console.log("Denied Report counted !")
+        })
+    //
     axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
     .then((res_report) => { 
 
-    axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                     .then((res) => {   
                       axios({
                         method: 'patch',
-                        url: 'http://95.156.227.203:7000/users/user_id/' + res_report.data[0].userID,
+                        url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
                         data: [    
                                 { "propName": "have_report", "value": false }
                               ] 

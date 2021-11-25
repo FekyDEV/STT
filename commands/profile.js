@@ -25,7 +25,7 @@ let headersList = {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions = {
-         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
          method: "GET",
          headers: headersList,
        }
@@ -37,8 +37,8 @@ let headersList = {
 if(!res.data[0]) {
           //
           axios.post('http://95.156.227.203:7000/users/', {
-            user_id: interaction.member.id,
-            user_name: interaction.member.tag,
+            user_id: interaction.user.id,
+            user_name: interaction.user.tag,
             bdg_early: true
           })    
           const profile_first_embed = new MessageEmbed()
@@ -55,7 +55,8 @@ if(!res.data[0]) {
       }
     //
 if(res.data[0]) {
-    const bdgs = [];
+  /*
+    let bdgs = [];
     if(res.data[0].bdg_h1 == true) {
        bdgs.push('<:stt_report_huner_1:896337630399189002>');
     }
@@ -74,6 +75,16 @@ if(res.data[0]) {
     if(res.data[0].bdg_early == true) {
       bdgs.push('<:stt_early_supporter:901398398828154880>');
     }
+*/
+
+let bdgs = ""
+if(res.data[0].bdg_dev == true) {
+  bdgs += "<:stt_verified_dev:896337630499848263>"
+}
+if(res.data[0].bdg_early == true) {
+  bdgs +=  '<:stt_early_supporter:901398398828154880>'
+}
+
     //////////////////////////////////////////////////////////////
     const user_lvl = [];
     if(res.data[0].xp >= 0) {
@@ -168,7 +179,7 @@ if(res.data[0]) {
     if(res.data[0].xp >= 200) {
       axios({
         method: 'patch',
-        url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+        url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
         data: [    
                 { "propName": "xp", "value": 200 }
               ] 
@@ -194,12 +205,12 @@ if(res.data[0]) {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions2 = {
-         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.member.id,
+         url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
          method: "GET",
          headers: headersList2,
        }
        axios.request(reqOptions2).catch((err) => {
-        message.lineReplyNoMention("❌ Provide a valid user ID !")
+        console.log("❌ Provide a valid user ID !")
          if(err) return;
        })
        .then(function (res2) {    
