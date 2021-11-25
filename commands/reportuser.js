@@ -38,12 +38,12 @@ module.exports = {
         )
         .addStringOption(option => option
             .setName('proof')
-            .setDescription('Fullscreen Screenshot (Link)')
+            .setDescription('Fullscreen Screenshot (Link - https:// ...)')
             .setRequired(true)            
         )
         .addStringOption(option => option
             .setName('proof_2')
-            .setDescription('Fullscreen Screenshot (Link)')
+            .setDescription('Fullscreen Screenshot (Link - https:// ...)')
             .setRequired(false)            
         ),   
 

@@ -61,48 +61,61 @@ if(res.data[0]) {
 let bdgs = ""
 if(res.data[0].bdg_dev == true) {
   bdgs += '<:stt_verified_dev:896337630499848263>  '
-} else if(res.data[0].bdg_early == true) {
+} 
+ if(res.data[0].bdg_early == true) {
   bdgs +=  '<:stt_early_supporter:901398398828154880>  '
-} else if(res.data[0].bdg_verify == true) {
+} 
+ if(res.data[0].bdg_verify == true) {
   bdgs += '<:stt_verified:896337630663409704>  '
-} else if(res.data[0].bdg_h1 == true) {
+} 
+ if(res.data[0].bdg_h1 == true) {
   bdgs += '<:stt_report_huner_1:896337630399189002>  '
-} else if(res.data[0].bdg_h2 == true) {
+} 
+ if(res.data[0].bdg_h2 == true) {
   bdgs += '<:stt_report_huner_2:896337630680211456>  '
-} else if(res.data[0].bdg_h3 == true) {
+} 
+ if(res.data[0].bdg_h3 == true) {
   bdgs += '<:stt_report_huner_3:896337630399172638>  '
-} else {
-  bdgs = 'Oh! Nothing here :('
-}
+} 
+
 //////////////////////////////////////////////////////////////
  let user_lvl = ""
  if(res.data[0].xp >= 0) {
   user_lvl = 'Try some commands for more XP :)'
-} else if(res.data[0].xp >= 20) {
+} 
+ if(res.data[0].xp >= 20) {
   user_lvl = 'LVL 1 <:level1:902463706879905793>'
-} else if(res.data[0].xp >= 40) {
+} 
+ if(res.data[0].xp >= 40) {
   user_lvl = 'LVL 2 <:level2:902463707181899787>'
-} else if(res.data[0].xp >= 60) {
+} 
+ if(res.data[0].xp >= 60) {
   user_lvl = 'LVL 3 <:level3:902463707324481586>'
-} else if(res.data[0].xp >= 80) {
+} 
+ if(res.data[0].xp >= 80) {
   user_lvl = 'LVL 4 <:level4:902463707102216213>'
-} else if(res.data[0].xp >= 100) {
+} 
+ if(res.data[0].xp >= 100) {
   user_lvl = 'LVL 5 <:level5:902463707194482768>'
-} else if(res.data[0].xp >= 120) {
+} 
+ if(res.data[0].xp >= 120) {
   user_lvl = 'LVL 6 <:level6:902463707211239444>'
-} else if(res.data[0].xp >= 140) {
+} 
+ if(res.data[0].xp >= 140) {
   user_lvl = 'LVL 7 <:level7:902463707165122580>'
-} else if(res.data[0].xp >= 160) {
+} 
+ if(res.data[0].xp >= 160) {
   user_lvl = 'LVL 8 <:level8:902463707152531487>'
-} else if(res.data[0].xp >= 180) {
+} 
+ if(res.data[0].xp >= 180) {
   user_lvl = 'LVL 9 <:level9:902463707114786857>'
-} else if(res.data[0].xp >= 192) {
+} 
+ if(res.data[0].xp >= 199) {
   user_lvl = 'LVL 10 <:level10:902463707181899786>'
-} else if(res.data[0].xp >= 200) {
+} 
+ if(res.data[0].xp >= 200) {
   user_lvl = 'Nice! You have reached the maximum level :tada: '
-} else {
-  user_lvl = 'Oh! Error...'
-}
+} 
 //////////////////////////////////////////
     let headersList2 = {
         "Accept": "*/*",

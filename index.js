@@ -137,18 +137,21 @@ if(interaction.customId == "select-profile") {
          interaction.values.forEach(async value => {
           if(value == 'profile_staff_embed') {
             if(value == 'aboutbot_staff_embed') {
-             interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
-            }
+            
             if(res.data[0].is_admin == false)
                 return interaction.reply({
                     content: "You don't have a permissions !",
                     ephemeral: true
                 });
             } else {
+                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
+            }
+        }
             if(value == 'profile_classic_embed') {
                  interaction.update({ embeds: [ profile.embed2 ]  })
             }
-            }
+            
+
         });
     }
 })
