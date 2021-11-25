@@ -30,7 +30,7 @@ let headersList = {
          headers: headersList,
        }
        axios.request(reqOptions).catch((err) => {
-        message.lineReplyNoMention("❌ Provide a valid user ID !")
+        console.log("❌ Provide a valid user ID !")
          if(err) return;
        })
        .then(function (res) {
@@ -57,159 +57,71 @@ if(!res.data[0]) {
       }
     //
 if(res.data[0]) {
-    const bdgs = [];
-    if(res.data[0].bdg_h1 == true) {
-       bdgs.push('<:stt_report_huner_1:896337630399189002>');
-    }
-    if(res.data[0].bdg_h2 == true) {
-      bdgs.push('<:stt_report_huner_2:896337630680211456>');
-    }
-    if(res.data[0].bdg_h3 == true) {
-      bdgs.push('<:stt_report_huner_3:896337630399172638>');
-    }
-    if(res.data[0].bdg_verify == true) {
-      bdgs.push('<:stt_verified:896337630663409704>');
-    }
-    if(res.data[0].bdg_dev == true) {
-      bdgs.push('<:stt_verified_dev:896337630499848263>');
-    }
-    if(res.data[0].bdg_early == true) {
-      bdgs.push('<:stt_early_supporter:901398398828154880>');
-    }
-    //////////////////////////////////////////////////////////////
-    const user_lvl = [];
-    if(res.data[0].xp >= 0) {
-      user_lvl.push('Try some commands for more XP :)');
-    }
-    if(res.data[0].xp >= 20) {
-      user_lvl.shift();
-      user_lvl.push('LVL 1 <:level1:902463706879905793>');
-    }
-    if(res.data[0].xp >= 40) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 2 <:level2:902463707181899787>');
-    }
-    if(res.data[0].xp >= 60) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 3 <:level3:902463707324481586>');
-    }
-    if(res.data[0].xp >= 80) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 4 <:level4:902463707102216213>');
-    }
-    if(res.data[0].xp >= 100) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 5 <:level5:902463707194482768>');
-    }
-    if(res.data[0].xp >= 120) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 6 <:level6:902463707211239444>');
-    }
-    if(res.data[0].xp >= 140) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 7 <:level7:902463707165122580>');
-    }
-    if(res.data[0].xp >= 160) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 8 <:level8:902463707152531487>');
-    }
-    if(res.data[0].xp >= 180) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 9 <:level9:902463707114786857>');
-    }
-    if(res.data[0].xp >= 192) {
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('LVL 10 <:level10:902463707181899786>');
-    }
-    
-    if(res.data[0].xp >= 200) {
-      axios({
-        method: 'patch',
-        url: 'http://95.156.227.203:7000/users/id/' + interaction.member.id,
-        data: [    
-                { "propName": "xp", "value": 200 }
-              ] 
-      })
-    
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.shift();
-      user_lvl.push('Nice! You have reached the maximum level :tada: ');
-    }
-    //////////////////////
+//
+let bdgs = ""
+if(res.data[0].bdg_dev == true) {
+  bdgs += '<:stt_verified_dev:896337630499848263>  '
+} else if(res.data[0].bdg_early == true) {
+  bdgs +=  '<:stt_early_supporter:901398398828154880>  '
+} else if(res.data[0].bdg_verify == true) {
+  bdgs += '<:stt_verified:896337630663409704>  '
+} else if(res.data[0].bdg_h1 == true) {
+  bdgs += '<:stt_report_huner_1:896337630399189002>  '
+} else if(res.data[0].bdg_h2 == true) {
+  bdgs += '<:stt_report_huner_2:896337630680211456>  '
+} else if(res.data[0].bdg_h3 == true) {
+  bdgs += '<:stt_report_huner_3:896337630399172638>  '
+} else {
+  bdgs = 'Oh! Nothing here :('
+}
+//////////////////////////////////////////////////////////////
+ let user_lvl = ""
+ if(res.data[0].xp >= 0) {
+  user_lvl = 'Try some commands for more XP :)'
+} else if(res.data[0].xp >= 20) {
+  user_lvl = 'LVL 1 <:level1:902463706879905793>'
+} else if(res.data[0].xp >= 40) {
+  user_lvl = 'LVL 2 <:level2:902463707181899787>'
+} else if(res.data[0].xp >= 60) {
+  user_lvl = 'LVL 3 <:level3:902463707324481586>'
+} else if(res.data[0].xp >= 80) {
+  user_lvl = 'LVL 4 <:level4:902463707102216213>'
+} else if(res.data[0].xp >= 100) {
+  user_lvl = 'LVL 5 <:level5:902463707194482768>'
+} else if(res.data[0].xp >= 120) {
+  user_lvl = 'LVL 6 <:level6:902463707211239444>'
+} else if(res.data[0].xp >= 140) {
+  user_lvl = 'LVL 7 <:level7:902463707165122580>'
+} else if(res.data[0].xp >= 160) {
+  user_lvl = 'LVL 8 <:level8:902463707152531487>'
+} else if(res.data[0].xp >= 180) {
+  user_lvl = 'LVL 9 <:level9:902463707114786857>'
+} else if(res.data[0].xp >= 192) {
+  user_lvl = 'LVL 10 <:level10:902463707181899786>'
+} else if(res.data[0].xp >= 200) {
+  user_lvl = 'Nice! You have reached the maximum level :tada: '
+} else {
+  user_lvl = 'Oh! Error...'
+}
+//////////////////////////////////////////
     let headersList2 = {
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.io)",
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions2 = {
-         url: 'http://95.156.227.203:7000/users/id/' + interaction.member.id,
+         url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
          method: "GET",
          headers: headersList2,
        }
        axios.request(reqOptions2).catch((err) => {
-        message.lineReplyNoMention("❌ Provide a valid user ID !")
+        console.log("❌ Provide a valid user ID !")
          if(err) return;
        })
        .then(function (res2) {    
-
-        var embed2 = new MessageEmbed()
+  var embed2 = new MessageEmbed()
      .setColor(bot_color)
-    .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
-     //.setAuthor(interaction.member.tag, interaction.member.displayAvatarURL( { dynamic:true }))
+     .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
      .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username, true)
      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
@@ -260,8 +172,8 @@ if(res.data[0]) {
         embeds: [ embed2 ],
         components: [ menu ],
         ephemeral: interaction.options.getBoolean('hide')
+      })
     })
-       })
        
     }})
     }}

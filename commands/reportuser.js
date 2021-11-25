@@ -47,12 +47,12 @@ module.exports = {
         ),   
 
     async execute(interaction) {
-        axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
      .then((res_user) => { 
          if(!res_user.data[0]) {
             axios.post('http://95.156.227.203:7000/users/', {
-                user_id: interaction.user.id,
-                user_name: interaction.user.tag,
+                id: interaction.user.id,
+                username: interaction.user.tag,
                 have_report: false,
                 xp: 0,
                 bdg_early: false
@@ -61,7 +61,7 @@ module.exports = {
          }     
         })
         
-    axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
      .then((res_user) => { 
         if(!res_user.data[0]) {
             console.log("Vytvaram nový profil !")
@@ -233,14 +233,23 @@ client.on("interactionCreate", async (interaction, message) => {
                 .then((ress) => { 
                     console.log('CONFIRM 2/4')
                     console.log(interaction.user.id)
-                    console.log('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+                    console.log('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                     console.log(ress.data[0].reportID)
                     console.log('CONFIRM 3/4')
 
 
-            client.channels.fetch('905594778220101633')
+    client.channels.fetch('913364277522468866')
     .then(channel => channel.send({ content: ress.data[0].reportID, embeds: [ report_log_embed ], components: [ rozhodnutie_reporta ]}).catch(console.error))
     .catch(console.error);
+
+    /*axios.post('https://canary.discord.com/api/webhooks/913364401497731092/xi_hbohJvQ6GBoLFfReJdqf64HCTdVfEjlqDRtb5GRP33cXAZQKj4c_GS8JgJBbvLdgV', {
+      username: "STT | LOG",
+      avatar_url: client.user.displayAvatarURL( { dynamic: true}),
+      content: ress.data[0].reportID,
+      embeds: [ report_log_embed ],
+      components: [ rozhodnutie_reporta ] // NOT WORKING :(
+  })*/
+
     console.log('CONFIRM 4/4')
 
         })
@@ -291,11 +300,11 @@ client.on("interactionCreate", async (interaction, message) => {
                     components: [report_link],
                     ephemeral: true
                 })
-                axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+                axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
+                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": true }
                       ] 
@@ -327,11 +336,11 @@ client.on("interactionCreate", async (interaction, message) => {
             ephemeral: true
         })
     }) // KONIEC DELETE REPORT API
-            axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+            axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/user_id/' + interaction.user.id,
+                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": false }
                       ] 
@@ -349,14 +358,27 @@ client.on("interactionCreate", async (interaction, message) => {
         console.log('-----------------------------------------')
         //console.log(interaction.message)
         console.log(interaction.message.content)
+        //
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        .then((res) => {   
+          axios({
+            method: 'patch',
+            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            data: [    
+                    { "propName": "admin_approved_reports", "value": res.data[0].admin_approved_reports + 1 },
+                    { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
+                  ] 
+          })      
+          console.log("Accepted Report counted !")
+        })
+        //
         axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
         .then((res_report) => { 
-
-        axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                         .then((res) => {   
                           axios({
                             method: 'patch',
-                            url: 'http://95.156.227.203:7000/users/user_id/' + res_report.data[0].userID,
+                            url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
                             data: [    
                                     { "propName": "have_report", "value": false }
                                   ] 
@@ -401,11 +423,18 @@ client.on("interactionCreate", async (interaction, message) => {
                 .setTimestamp()
             //
             interaction.update({
-                embeds: [ report_accepted_log_embed ],
-                components: [ ],
-                //content: 'Interaction was Canceled !',
-                ephemeral: true
-            })
+              embeds: [  ],
+              components: [ ],
+              content: 'Success!',
+          })
+          //
+          axios.post('https://canary.discord.com/api/webhooks/913364429230440449/0QRPGseKwCwDkt2WGcv0L4_KFpr9g3QBtQZ-xu98YmcjgZwqfHg5ZOBQwX1viuyJz4bO', {
+            username: "STT | LOG",
+            avatar_url: client.user.displayAvatarURL( { dynamic: true}),
+	        embeds: [ report_accepted_log_embed ],
+        })
+        console.log("WEBHOOK SENDED !")
+          //
         })
         })
     })
@@ -420,29 +449,33 @@ if(interaction.customId === "report_deny"){
     console.log('-----------------------------------------')
     //console.log(interaction.message)
     console.log(interaction.message.content)
+    //
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        .then((res) => {   
+          axios({
+            method: 'patch',
+            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            data: [    
+                    { "propName": "admin_denied_reports", "value": res.data[0].admin_denied_reports + 1 },
+                    { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
+                  ] 
+          })      
+          console.log("Denied Report counted !")
+        })
+    //
     axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
     .then((res_report) => { 
 
-    axios.get('http://95.156.227.203:7000/users/user_id/' + interaction.user.id)
+    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
                     .then((res) => {   
                       axios({
                         method: 'patch',
-                        url: 'http://95.156.227.203:7000/users/user_id/' + res_report.data[0].userID,
+                        url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
                         data: [    
                                 { "propName": "have_report", "value": false }
                               ] 
                       })      
                       console.log("User have now new report !")
-            axios({
-            method: 'patch',
-             url: 'http://95.156.227.203:4000/reports/userid/' + res_report.data[0].userID,
-             data: [ 
-                    { "propName": "status", "value": "denied" },
-                    { "propName": "admin", "value": interaction.user.tag },
-                    { "propName": "timeChanged", "value":denied_date }
-                   ] 
-                })      
-                console.log("Report Denied !") 
         //
         let headersList1 = {
             "Accept": "*/*",
@@ -472,11 +505,24 @@ if(interaction.customId === "report_deny"){
             .setTimestamp()
         //
         interaction.update({
-            embeds: [ report_denied_log_embed ],
-            components: [ ],
-            //content: 'Interaction was Canceled !',
-            ephemeral: true
-        })
+          embeds: [  ],
+          components: [ ],
+          content: 'Success!',
+          ephemeral: true
+      })
+        //
+        axios.post('https://canary.discord.com/api/webhooks/913364476277952592/djH0t3-azLk2H8mDuuHsc90Oj1OEeswUY9I365whoevgieyQhMG7QcW5VG2xdoR5gZ8D', {
+          username: "STT | LOG",
+          avatar_url: client.user.displayAvatarURL( { dynamic: true}),
+        embeds: [ report_denied_log_embed ],
+      })
+      console.log("WEBHOOK SENDED !")
+        //
+        axios({
+          method: 'delete',
+           url: 'http://95.156.227.203:4000/reports/uid/' + res_report.data[0].userID
+              })      
+              console.log("Report Denied and Deleted !") 
     })
     })
 })
