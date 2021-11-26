@@ -1,8 +1,9 @@
+//
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageActionRow, MessageButton, WebhookClient  } = require('discord.js');
 const Discord = require("discord.js");
 const { Client, Intents, Collection } = require("discord.js");
-//
+//a
 const config = require("../Data/config.json");
 //
 const client = new Client({
