@@ -3,6 +3,9 @@
 //
 //const Discord = require("discord.js");
 const config = require("./Data/config.json");
+//
+const ip = '5.249.164.143'
+//
 const bot_color = '0x370595';
 //
 const staff_member_role_id = '603505971507101698';
@@ -114,7 +117,7 @@ if(interaction.isCommand()) {
 } else if (interaction.isSelectMenu()) {
 
 //--// ABOUTBOT //--//´
-axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
              .then((res) => { 
 if(interaction.customId == "select-aboutbot") {
     const aboutbot = require("./commands/aboutbot.js")//

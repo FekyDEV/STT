@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { MessageEmbed } = require('discord.js');
 //
+const ip = '5.249.164.143'
+//
 const bot_color = '0x370595';
 //
 module.exports = {
@@ -10,7 +12,7 @@ module.exports = {
         try {
             axios({
               method: 'delete',
-              url: 'http://95.156.227.203:5000/servers/sid/' + guild.id})
+              url: 'http://${ip}:5000/servers/sid/' + guild.id})
               console.log("Data deleted successfully !")
               } catch (err) {
           console.log(err)

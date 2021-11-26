@@ -17,6 +17,8 @@ const client = new Client({
 const axios = require("axios")
 const moment = require('moment');
 //
+const ip = '5.249.164.143'
+//
 const bot_name = 'Stop The Trollers'
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
 const bot_version = 'v1.5' // AKTUÁLNA VERZIA
@@ -48,10 +50,10 @@ module.exports = {
         ),   
 
     async execute(interaction) {
-        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
      .then((res_user) => { 
          if(!res_user.data[0]) {
-            axios.post('http://95.156.227.203:7000/users/', {
+            axios.post(`http://${ip}:7000/users/`, {
                 id: interaction.user.id,
                 username: interaction.user.tag,
                 have_report: false,
@@ -62,7 +64,7 @@ module.exports = {
          }     
         })
         
-    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+    axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
      .then((res_user) => { 
         if(!res_user.data[0]) {
             console.log("Vytvaram nový profil !")
@@ -147,7 +149,7 @@ module.exports = {
                 //
           );
           //
-    axios.post('http://95.156.227.203:4000/reports/', {
+    axios.post(`http://${ip}:4000/reports/`, {
         reportID: random_id,
         status: "pending",
         userID: interaction.user.id,
@@ -175,7 +177,7 @@ module.exports = {
 client.on("interactionCreate", async (interaction, message) => {
 
     if(interaction.customId === "confirm_button"){
-       axios.get('http://95.156.227.203:4000/reports/userid/' + interaction.user.id)
+       axios.get(`http://${ip}:4000/reports/userid/` + interaction.user.id)
         .then((res) => { 
 
         let headersList1 = {
@@ -194,7 +196,7 @@ client.on("interactionCreate", async (interaction, message) => {
           })
            .then(function (res_discord) {
 ///
-            axios.get('http://95.156.227.203:4000/reports/userid/' + interaction.user.id)
+            axios.get(`http://${ip}:4000/reports/userid/` + interaction.user.id)
         .then((res) => { 
               const report_log_embed = new Discord.MessageEmbed()
               .setColor(`${bot_color}`)
@@ -230,11 +232,11 @@ client.on("interactionCreate", async (interaction, message) => {
                     //
                 );
                 console.log('CONFIRM 1/4')
-            axios.get('http://95.156.227.203:4000/reports/userid/' + interaction.user.id)
+            axios.get(`http://${ip}:4000/reports/userid/` + interaction.user.id)
                 .then((ress) => { 
                     console.log('CONFIRM 2/4')
                     console.log(interaction.user.id)
-                    console.log('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+                    console.log(`http://${ip}:7000/users/id/` + interaction.user.id)
                     console.log(ress.data[0].reportID)
                     console.log('CONFIRM 3/4')
 
@@ -301,11 +303,11 @@ client.on("interactionCreate", async (interaction, message) => {
                     components: [report_link],
                     ephemeral: true
                 })
-                axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+                axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+                url: `http://${ip}:7000/users/id/` + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": true }
                       ] 
@@ -318,7 +320,7 @@ client.on("interactionCreate", async (interaction, message) => {
       })
      } // KONIEC IF
      if(interaction.customId === "cancel_button"){
-        axios.delete('http://95.156.227.203:4000/reports/uid/' + interaction.user.id)
+        axios.delete(`http://${ip}:4000/reports/uid/` + interaction.user.id)
         .then((res111) => { 
             console.log("Dáta boli vymazané !")
         //
@@ -337,11 +339,11 @@ client.on("interactionCreate", async (interaction, message) => {
             ephemeral: true
         })
     }) // KONIEC DELETE REPORT API
-            axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+            axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
             .then((res_data) => {   
               axios({
                 method: 'patch',
-                url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+                url: `http://${ip}:7000/users/id/` + interaction.user.id,
                 data: [    
                         { "propName": "have_report", "value": false }
                       ] 
@@ -360,11 +362,11 @@ client.on("interactionCreate", async (interaction, message) => {
         //console.log(interaction.message)
         console.log(interaction.message.content)
         //
-        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
         .then((res) => {   
           axios({
             method: 'patch',
-            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            url: `http://${ip}:7000/users/id/` + interaction.user.id,
             data: [    
                     { "propName": "admin_approved_reports", "value": res.data[0].admin_approved_reports + 1 },
                     { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
@@ -373,13 +375,13 @@ client.on("interactionCreate", async (interaction, message) => {
           console.log("Accepted Report counted !")
         })
         //
-        axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
+        axios.get(`http://${ip}:4000/reports/rid/` + interaction.message.content)
         .then((res_report) => { 
-        axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+        axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
                         .then((res) => {   
                           axios({
                             method: 'patch',
-                            url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
+                            url: `http://${ip}:7000/users/id/` + res_report.data[0].userID,
                             data: [    
                                     { "propName": "have_report", "value": false }
                                   ] 
@@ -387,7 +389,7 @@ client.on("interactionCreate", async (interaction, message) => {
                           console.log("User have now new report !")
                 axios({
                 method: 'patch',
-                 url: 'http://95.156.227.203:4000/reports/userid/' + res_report.data[0].userID,
+                 url: `http://${ip}:4000/reports/userid/` + res_report.data[0].userID,
                  data: [ 
                         { "propName": "status", "value": "accepted" },
                         { "propName": "admin", "value": interaction.user.tag },
@@ -451,11 +453,11 @@ if(interaction.customId === "report_deny"){
     //console.log(interaction.message)
     console.log(interaction.message.content)
     //
-    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+    axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
         .then((res) => {   
           axios({
             method: 'patch',
-            url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+            url: `http://${ip}:7000/users/id/` + interaction.user.id,
             data: [    
                     { "propName": "admin_denied_reports", "value": res.data[0].admin_denied_reports + 1 },
                     { "propName": "admin_total_reports", "value": res.data[0].admin_total_reports + 1 }
@@ -464,14 +466,14 @@ if(interaction.customId === "report_deny"){
           console.log("Denied Report counted !")
         })
     //
-    axios.get('http://95.156.227.203:4000/reports/rid/' + interaction.message.content)
+    axios.get(`http://${ip}:4000/reports/rid/` + interaction.message.content)
     .then((res_report) => { 
 
-    axios.get('http://95.156.227.203:7000/users/id/' + interaction.user.id)
+    axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
                     .then((res) => {   
                       axios({
                         method: 'patch',
-                        url: 'http://95.156.227.203:7000/users/id/' + res_report.data[0].userID,
+                        url: `http://${ip}:7000/users/id/` + res_report.data[0].userID,
                         data: [    
                                 { "propName": "have_report", "value": false }
                               ] 
@@ -521,7 +523,7 @@ if(interaction.customId === "report_deny"){
         //
         axios({
           method: 'delete',
-           url: 'http://95.156.227.203:4000/reports/uid/' + res_report.data[0].userID
+           url: `http://${ip}:4000/reports/uid/` + res_report.data[0].userID
               })      
               console.log("Report Denied and Deleted !") 
     })

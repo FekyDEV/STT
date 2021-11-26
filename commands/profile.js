@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 //
+const ip = '5.249.164.143'
+//
 const bot_name = 'Stop The Trollers'
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
 const bot_version = 'v1.5' // AKTUÁLNA VERZIA
@@ -26,7 +28,7 @@ let headersList = {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions = {
-         url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+         url: `http://${ip}:7000/users/id/` + interaction.user.id,
          method: "GET",
          headers: headersList,
        }
@@ -37,7 +39,7 @@ let headersList = {
        .then(function (res) {
 if(!res.data[0]) {
           //
-          axios.post('http://95.156.227.203:7000/users/', {
+          axios.post(`http://${ip}:7000/users/`, {
             id: interaction.user.id,
             username: interaction.user.tag,
             bdg_early: true
@@ -120,7 +122,7 @@ if(res.data[0].bdg_dev == true) {
 //////////////////////////////////////////
 let bl_status = ""
 //
-axios.get('http://95.156.227.203:4000/reports/id/' + interaction.user.id)
+axios.get(`http://${ip}:4000/reports/id/ `+ interaction.user.id)
 .catch((err) => {
     console.log('something is wrong')
  }).then((res_bl) => {
@@ -142,7 +144,7 @@ if(!res_bl.data[0]) {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions2 = {
-         url: 'http://95.156.227.203:7000/users/id/' + interaction.user.id,
+         url: 'http://${ip}:7000/users/id/' + interaction.user.id,
          method: "GET",
          headers: headersList2,
        }

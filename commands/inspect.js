@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 //
 const axios = require("axios")
+const ip = '5.249.164.143'
 //
 const bot_name = 'Stop The Trollers'
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
@@ -47,7 +48,7 @@ module.exports = {
         })
         .then(function (res2) {
       //-//
-      axios.get('http://95.156.227.203:4000/reports/id/' + inspect_user_id_replace)
+      axios.get(`http://${ip}:4000/reports/id/` + inspect_user_id_replace)
       .then((res) => {
         //
         if(!res2) return;

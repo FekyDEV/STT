@@ -1,6 +1,9 @@
 const axios = require('axios');
 const { MessageEmbed } = require('discord.js');
 //
+//
+const ip = '5.249.164.143'
+//
 const bot_color = '0x370595';
 const bot_logo = 'https://i.imgur.com/D0FjS3H.png';
 //
@@ -57,7 +60,7 @@ module.exports = {
             try {
               axios({
                 method: 'post',
-                url: 'http://95.156.227.203:5000/servers/',
+                url: 'http://${ip}:5000/servers/',
                 data: {
                   sid: guild.id,
                   owner_id: guild.ownerId
@@ -78,7 +81,7 @@ module.exports = {
          try {
             axios({
               method: 'post',
-              url: 'http://95.156.227.203:5000/servers/',
+              url: 'http://${ip}:5000/servers/',
               data: {
                 sid: guild.id,
                 owner_id: guild.ownerId
