@@ -46,7 +46,7 @@ module.exports = {
             .addBooleanOption(option => option.setName('enable').setRequired(true).setDescription('Enable or Disable this function ?'))
             .addIntegerOption(option => option.setName('alt_days').setRequired(false).setDescription('Select a days (0-365)'))),   
 
-    async execute(interaction, client) {
+    async execute(interaction) {
       if(!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return interaction.reply({ content: "You do not have the following permissions:\n\`MANAGE_SERVER\`", ephemeral: true });
 
     
@@ -106,9 +106,9 @@ axios.get('http://95.156.227.203:5000/servers/sid/' + interaction.guild.id)
      .then((res_srv1) => { 
       console.log(log_chnl.id)
 
-  client.channels.fetch(log_chnl.id)
+  /*client.channels.fetch(log_chnl.id)
   .then(channel => channel.send({ content: ':white_check_mark: The log channel has been successfully set up here!'}).catch(console.error))
-  .catch(console.error);
+  .catch(console.error);*/
   return;
      })
     }
