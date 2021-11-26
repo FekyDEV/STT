@@ -59,11 +59,33 @@ let headersList544 = {
      .setFooter(`${bot_name}`, `${bot_logo}` )
      .setTimestamp()
      //
-     if(!res3.data[0].log_channel) return console.log("NO LOG :(");
-    if(res.data[0].status === "accepted") return guildMember.guild.channels.cache.get(res3.data[0].log_channel).send({ embeds: [welcome_blacklisted_new]})
-    })
-   })
-  })
+    //
+    if(res3.data[0].autoban == true) {
+        guildMember.ban({ reason: 'ST BOT: User is Blacklisted in Stop The Trollers !' })
+        welcome_blacklisted_new.addField("Auto Ban", "> User was banned !")
+    }
+    //
+    if(res3.data[0].autorole == true) {
+        const autorolerole = res3.data[0].autorole_role
+        if(!guildMember.manageable || !autorolerole.editable) {
+            welcome_blacklisted_new.addField("Auto Role", "Nope, cannot add role to that member! (Try move my role higher)")
+        } else {
+        guildMember.roles.add(res3.data[0].autorole_role);
+        welcome_blacklisted_new.addField("Auto Role", "> Role was added !")
+        }
+    }
+    //
+    if(!res3.data[0].log_channel == "none") {
+        console.log("NO LOG :(");
+     } else {
+    if(res.data[0].status === "accepted") { 
+        guildMember.guild.channels.cache.get(res3.data[0].log_channel).send({ embeds: [welcome_blacklisted_new]})
+     }
+    }
+    //
+    }) // RES (1)
+   }) // RES3
+  }) // RES2
 /////////////////////////////
-	},
-};
+	} // EXECUTE
+}; // EXPORT

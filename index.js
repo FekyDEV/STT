@@ -21,7 +21,8 @@ const client = new Client({
 			Intents.FLAGS.GUILD_MESSAGES,
             Intents.FLAGS.GUILD_VOICE_STATES,
             Intents.FLAGS.GUILD_MEMBERS,
-            Intents.FLAGS.GUILD_INTEGRATIONS 
+            Intents.FLAGS.GUILD_INTEGRATIONS,
+            Intents.FLAGS.GUILD_MEMBERS 
 		]
 	});
 //
