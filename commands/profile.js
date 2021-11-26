@@ -16,7 +16,8 @@ module.exports = {
         .addBooleanOption(option => option
             .setName('hide')
             .setDescription('Do you want to hide our interaction ?')
-        ),   
+        ),
+           
 
     async execute(interaction) {
 let headersList = {
@@ -51,7 +52,7 @@ if(!res.data[0]) {
             //
             interaction.reply({
                 embeds: [ profile_first_embed ],
-                ephemeral: interaction.options.getBoolean('hide')
+                ephemeral: true
             })
           return;
       }
@@ -117,6 +118,24 @@ if(res.data[0].bdg_dev == true) {
   user_lvl = 'Nice! You have reached the maximum level :tada: '
 } 
 //////////////////////////////////////////
+let bl_status = ""
+//
+axios.get('http://95.156.227.203:4000/reports/id/' + interaction.user.id)
+.catch((err) => {
+    console.log('something is wrong')
+ }).then((res_bl) => {
+//
+if(!res_bl.data[0]) {
+  bl_status += "<:stt_not_blacklisted:894982664820506644>"
+} else {
+  if(res_bl.data[0].status == "accepted") {
+    bl_status = "<:stt_blacklisted:894982664447209554>"
+  } 
+}
+
+  
+//////////////////////////////////////////
+
     let headersList2 = {
         "Accept": "*/*",
         "User-Agent": "Thunder Client (https://www.thunderclient.io)",
@@ -136,7 +155,7 @@ if(res.data[0].bdg_dev == true) {
      .setColor(bot_color)
      .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
-     .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username, true)
+     .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username + "  " + bl_status, true)
      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
      .addField("Badges - From STT", "> " + bdgs, false)
      .addField("Level", "> " + user_lvl, true)
@@ -187,6 +206,6 @@ if(res.data[0].bdg_dev == true) {
         ephemeral: interaction.options.getBoolean('hide')
       })
     })
-       
+  })
     }})
     }}

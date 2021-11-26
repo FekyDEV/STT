@@ -50,7 +50,7 @@ module.exports = {
       axios.get('http://95.156.227.203:4000/reports/id/' + inspect_user_id_replace)
       .then((res) => {
         //
-        if(!res2) return;0
+        if(!res2) return;
         if(!res.data[0]) {
     const inspect_false_embed = new MessageEmbed()
         .setColor(`GREEN`)
