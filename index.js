@@ -85,6 +85,7 @@ client.on("guildCreate", (guild) => {
 //
 
 client.on("interactionCreate", async (interaction, message) => {
+    console.log(interaction.customId)
 
     const clientId3 = client.user.id
     const guildId3 = interaction.guild.id;
@@ -130,7 +131,7 @@ if(interaction.customId == "select-aboutbot") {
             
         });
     }
-    //
+//////////////////////////////////////////////////////////////////////////////////////////////////// PROFILE - SELECT MENU
 if(interaction.customId == "select-profile") {
     const profile = require("./commands/profile.js")
       console.log(profile.embed)
@@ -154,6 +155,26 @@ if(interaction.customId == "select-profile") {
 
         });
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////// BAN APPEAL - BUTTONS
+    /*if(interaction.customId == "confirm_butn"){
+        console.log("Ban Appeal sended 1 !")
+    }
+    if(interaction.customId === "confirm_butn"){
+        console.log("Ban Appeal sended 2 !")
+    }
+    //
+    if(interaction.customId == 'confirm_butn'){
+        console.log("Ban Appeal sended 3 !")
+    }
+    if(interaction.customId === 'confirm_butn'){
+        console.log("Ban Appeal sended 4 !")
+    }
+
+
+    if(interaction.customId == "3"){
+        console.log("Ban Appeal denied !")
+    }*/
+////////////////////////////////////////////////////////////////////////////////////////////////////
 })
 //--//  //--//
     }
