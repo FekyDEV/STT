@@ -12,7 +12,7 @@ module.exports = {
         try {
             axios({
               method: 'delete',
-              url: 'http://${ip}:5000/servers/sid/' + guild.id})
+              url: 'http://' + ip + ':5000/servers/sid/' + guild.id})
               console.log("Data deleted successfully !")
               } catch (err) {
           console.log(err)

@@ -60,7 +60,7 @@ module.exports = {
             try {
               axios({
                 method: 'post',
-                url: 'http://${ip}:5000/servers/',
+                url: 'http://' + ip + ':5000/servers/',
                 data: {
                   sid: guild.id,
                   owner_id: guild.ownerId
@@ -81,7 +81,7 @@ module.exports = {
          try {
             axios({
               method: 'post',
-              url: 'http://${ip}:5000/servers/',
+              url: 'http://' + ip + ':5000/servers/',
               data: {
                 sid: guild.id,
                 owner_id: guild.ownerId

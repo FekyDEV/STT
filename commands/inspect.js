@@ -48,7 +48,7 @@ module.exports = {
         })
         .then(function (res2) {
       //-//
-      axios.get(`http://${ip}:4000/reports/id/` + inspect_user_id_replace)
+      axios.get(`'http://' + ip + ':4000/reports/id/'` + inspect_user_id_replace)
       .then((res) => {
         //
         if(!res2) return;

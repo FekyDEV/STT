@@ -28,7 +28,7 @@ let headersList = {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions = {
-         url: `http://${ip}:7000/users/id/` + interaction.user.id,
+         url: 'http://' + ip + ':7000/users/id/' + interaction.user.id,
          method: "GET",
          headers: headersList,
        }
@@ -39,7 +39,7 @@ let headersList = {
        .then(function (res) {
 if(!res.data[0]) {
           //
-          axios.post(`http://${ip}:7000/users/`, {
+          axios.post('http://' + ip + ':7000/users/', {
             id: interaction.user.id,
             username: interaction.user.tag,
             bdg_early: true
@@ -122,7 +122,7 @@ if(res.data[0].bdg_dev == true) {
 //////////////////////////////////////////
 let bl_status = ""
 //
-axios.get(`http://${ip}:4000/reports/id/ `+ interaction.user.id)
+axios.get('http://' + ip + ':4000/reports/id/' + interaction.user.id)
 .catch((err) => {
     console.log('something is wrong')
  }).then((res_bl) => {
@@ -144,7 +144,7 @@ if(!res_bl.data[0]) {
         "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
        }
        let reqOptions2 = {
-         url: 'http://${ip}:7000/users/id/' + interaction.user.id,
+         url: 'http://' + ip + ':7000/users/id/' + interaction.user.id,
          method: "GET",
          headers: headersList2,
        }

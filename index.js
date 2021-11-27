@@ -117,7 +117,7 @@ if(interaction.isCommand()) {
 } else if (interaction.isSelectMenu()) {
 
 //--// ABOUTBOT //--//´
-axios.get(`http://${ip}:7000/users/id/` + interaction.user.id)
+axios.get('http://' + ip + ':7000/users/id/' + interaction.user.id)
              .then((res) => { 
 if(interaction.customId == "select-aboutbot") {
     const aboutbot = require("./commands/aboutbot.js")//

@@ -54,7 +54,7 @@ module.exports = {
     
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
 if(interaction.options.getSubcommand() === 'info') {
-  axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
+  axios.get('http://' + ip + ':5000/servers/sid/' + interaction.guild.id)
   .then((res) => { 
 
     let log_status = (res.data[0].log_status == true) ? `> __Status:__  <:Yes:871419569426804796> | <#${res.data[0].log_channel}>`:'> __Status:__  <:No:871419569472933918>'
@@ -85,7 +85,7 @@ if(interaction.options.getSubcommand() === 'info') {
     })
 }
 //-//--//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//-//--//
-axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
+axios.get('http://' + ip + ':5000/servers/sid/' + interaction.guild.id)
   .then((res_server) => { 
   if(interaction.options.getSubcommand() === 'log') {
     const log_chnl = interaction.options.getChannel('log_channel')
@@ -96,7 +96,7 @@ axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
     //console.log(log_chnl.id)
     axios({
       method: 'patch',
-      url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+      url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "log_status", "value": true },
        { "propName": "log_channel", "value": log_chnl.id }]})
@@ -104,7 +104,7 @@ axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
        
    interaction.reply({ content: 'LOG was successfully **Enabled** !', ephemeral: true })
   //
-  axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
+  axios.get('http://' + ip + ':5000/servers/sid/' + interaction.guild.id)
      .then((res_srv1) => { 
       console.log(log_chnl.id)
 
@@ -122,7 +122,7 @@ axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
       console.log("NEW ACTIVITY: AUTOBAN SUBCOMMAND !")
       axios({
         method: 'patch',
-        url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+        url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
         data: [    
           { "propName": "autoban", "value": true }
         ]})
@@ -135,7 +135,7 @@ axios.get(`http://${ip}:5000/servers/sid/` + interaction.guild.id)
     console.log("NEW ACTIVITY: AUTOBAN SUBCOMMAND !")
     axios({
       method: 'patch',
-      url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+      url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
       data: [    
         { "propName": "autoban", "value": false }
       ]})
@@ -170,7 +170,7 @@ if(interaction.options.getSubcommand() === 'autorole') {
   console.log("NEW ACTIVITY: AUTOROLE SUBCOMMAND !")
   axios({
     method: 'patch',
-    url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+    url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
     data: [    
       { "propName": "autorole", "value": true },
       { "propName": "autorole_role", "value": rola.id }]
@@ -186,7 +186,7 @@ return;
   console.log("NEW ACTIVITY: AUTOROLE SUBCOMMAND !")
   axios({
     method: 'patch',
-    url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+    url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
     data: [    
       { "propName": "autorole", "value": false },
       { "propName": "autorole_role", "value": "none" }]
@@ -207,7 +207,7 @@ return;
     console.log("NEW ACTIVITY: ALT DETECTION SUBCOMMAND !")
     axios({
       method: 'patch',
-      url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+      url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "alt_detection", "value": true },
        { "propName": "alt_days", "value": dni }]})
@@ -223,7 +223,7 @@ return;
     console.log("NEW ACTIVITY: ALT DETECTION SUBCOMMAND !")
     axios({
       method: 'patch',
-      url: `http://${ip}:5000/servers/sid/` + interaction.guild.id,
+      url: 'http://' + ip + ':5000/servers/sid/' + interaction.guild.id,
       data: [    
        { "propName": "alt_detection", "value": false },
        { "propName": "alt_days", "value": 0 }]})
