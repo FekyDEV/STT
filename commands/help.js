@@ -28,8 +28,9 @@ module.exports = {
 		//
                 //.addField('<:funny:894985690528509982> Fun', '`meme` `roulette` `8ball` `hack`', true)
                 //.addField('<:stt_pooperror:894987766046285854> NSFW', '~~none~~', true)
-                help_embed.addField('<:stt_hastag:894863362284982273> General', '`inspect` `aboutbot` `profile` `avatar` `together` `info`', false)
-                help_embed.addField("⠀","<:stt_rules:896337630550167562> **TIP:** __Try new profile & together commands !__ \n<:stt_rules:896337630550167562> **TIP:** __Use commands for more XP!__")
+                help_embed.addField('<:stt_hastag:894863362284982273> General', '`inspect` `aboutbot` `profile` `avatar` `info`', false)
+                help_embed.addField('<:stt_shop:896337630378205196> Reporting', '`reportuser`', false)
+                help_embed.addField("⠀","<:stt_rules:896337630550167562> **TIP:** __Try new profile commands !__ [BETA] \n<:stt_rules:896337630550167562> **TIP:** __Use commands for more XP!__")
           //
           const row = new MessageActionRow()
 		.addComponents(

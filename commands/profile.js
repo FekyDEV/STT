@@ -17,7 +17,7 @@ module.exports = {
         .setDescription("Display your STT Profile.")
         .addBooleanOption(option => option
             .setName('hide')
-            .setDescription('Do you want to hide our interaction ?')
+            .setDescription('Do you want to hide our interaction ? + Your Report Stats !')
         ),
            
 
@@ -153,6 +153,7 @@ if(!res_bl.data[0]) {
          if(err) return;
        })
        .then(function (res2) {    
+         console.log(res2)
   var embed2 = new MessageEmbed()
      .setColor(bot_color)
      .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
@@ -163,19 +164,28 @@ if(!res_bl.data[0]) {
      .addField("Level", "> " + user_lvl, true)
      .addField("XP", "> " +  "`" + res2.data[0].xp + "`**/**200", true)
      .addField("Boost", "> " + "x" + res.data[0].boost, true)
-     .addField("⠀","<:stt_rules:896337630550167562> **TIP:** __Use commands and our features for more XP and Levels__ ! \n<:stt_rules:896337630550167562> **TIP:** __Report users and earn badges!__")
      .setFooter(bot_name, bot_logo)
      .setImage('https://i.imgur.com/TlNvTNW.png')
      .setTimestamp()
+    //
+    if(interaction.options.getBoolean('hide') == true) {
+      let pending_reports = res2.data[0].user_total_reports - (res2.data[0].user_approved_reports + res2.data[0].user_denied_reports)
+      embed2.addField("<:stt_shop:896337630378205196> Reports", "All: " + res2.data[0].user_approved_reports, true)
+      embed2.addField("<:stt_pending:905529168953999371> Pending Reports", "Pending: " + pending_reports, true)
+    }
+    embed2.addField("⠀","<:stt_rules:896337630550167562> **TIP:** __Use commands and our features for more XP and Levels__ ! \n<:stt_rules:896337630550167562> **TIP:** __Report users and earn badges!__ \n<:stt_rules:896337630550167562> **TIP:** __Try hidden profile for report stats !__")
+
+    //
     //
     var embed = new MessageEmbed()
       .setColor(bot_color)
       .setTitle("<:stt_shop:896337630378205196> Your STT Admin Profile")
       .addField("<:stt_ticket:894863362503110678> Username", res.data[0].username, true)
       .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
-      .addField("<:stt_shop:896337630378205196> Total Reports", '0', )
-      .addField("<:stt_accepted:905529657217146950> Approved Reports", '0', true)
-      .addField("<:stt_denied:906514271217811467> Denied Reports", '0', true)
+      .addField("<:stt_shop:896337630378205196> Total Reports", "Total: " + res.data[0].admin_total_reports, false)
+      .addField("<:stt_accepted:905529657217146950> Approved Reports", "Approved: " + res2.data[0].admin_approved_reports, true)
+      .addField("<:stt_denied:906514271217811467> Denied Reports", "Denied: " + res2.data[0].admin_denied_reports, true)
+
     //
     const menu = new MessageActionRow()
     .addComponents(

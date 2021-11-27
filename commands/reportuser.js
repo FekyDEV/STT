@@ -89,9 +89,28 @@ module.exports = {
             console.log("17")
             console.log("18")
         } else {
+          //
+    axios.get('http://' + ip + ':4000/reports/id/' + interaction.user.id)
+     .then((reess) => { 
+      axios.get('http://' + ip + ':4000/reports/id/' + interaction.options.getString('userid'))
+      .then((reess2) => { 
+        console.log(reess2)
+       if(reess.data[0]) {
+          if(reess.data[0].status == "accepted") return interaction.reply( { content: 'You are Blacklisted !', ephemeral: true})
+       } else {
+         console.log("Not Blacklisted")
+       }
+       if(reess2.data[0]) {
+        if(reess2.data[0].status == "accepted") return interaction.reply( { content: 'User is already Blacklisted !', ephemeral: true})
+        if(reess2.data[0].status == 'pending') return interaction.reply( { content: 'User is already reported !', ephemeral: true})
+       } else {
+         console.log("nothing...")
+       }
+          //
         if(res_user.data[0].have_report == true) {
             interaction.reply( { content: 'You already have Pending Report !', ephemeral: true})
             return;
+
         } else {
     //
         let headersList1 = {
@@ -168,7 +187,7 @@ module.exports = {
             ephemeral: true
         })
     })
-}
+} }) })
         }
 })
 }
@@ -197,12 +216,23 @@ client.on("interactionCreate", async (interaction, message) => {
           })
            .then(function (res_discord) {
 ///
-            axios.get('http://' + ip + ':4000/reports/userid/' + interaction.user.id)
+      axios.get('http://' + ip + ':4000/reports/userid/' + interaction.user.id)
         .then((res) => { 
+          console.log(res)
+          //
+          axios.get('http://' + ip + ':7000/users/id/' + interaction.user.id)
+        .then((ress) => { 
+          let is_verified = ""
+          console.log(res.data[0].bdg_verify)
+        if(ress.data[0].bdg_verify == true) {
+          is_verified = "<:stt_verified:896337630663409704>"
+        }
+        console.log(is_verified)
+          //
               const report_log_embed = new Discord.MessageEmbed()
               .setColor(`${bot_color}`)
                 .setTitle("NEW Report ! | ID: " + res.data[0].reportID)
-                .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${interaction.user.tag}⠀⠀⠀⠀⠀||${interaction.user.id}||`)
+                .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${interaction.user.tag} ${is_verified}⠀⠀⠀⠀⠀||${interaction.user.id}||`)
                 .setThumbnail("https://cdn.discordapp.com/avatars/" + res_discord.data.id + "/" + res_discord.data.avatar + ".png")
                 .setImage('https://i.imgur.com/TlNvTNW.png')
                 //.addField("<:stt_ticket:894863362503110678> User Name", `${res.data[0].user}`,true)
@@ -257,6 +287,7 @@ client.on("interactionCreate", async (interaction, message) => {
     console.log('CONFIRM 4/4')
 
         })
+      })
     })
             })
 
@@ -419,7 +450,7 @@ client.on("interactionCreate", async (interaction, message) => {
                    
                 ] 
         })     
-      })
+      
       //
             let headersList1 = {
                 "Accept": "*/*",
@@ -436,10 +467,18 @@ client.on("interactionCreate", async (interaction, message) => {
                 if(err) return;
               })
               .then(function (res_discord) {
+                //
+              let is_verified = ""
+                console.log(ress.data[0].bdg_verify)
+              if(ress.data[0].bdg_verify == true) {
+                is_verified = "<:stt_verified:896337630663409704>"
+              }
+              console.log(is_verified)
+                //
             const report_accepted_log_embed = new Discord.MessageEmbed()
               .setColor(`${bot_color}`)
                 .setTitle("Report | ID: " + res_report.data[0].reportID)
-                .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${res_report.data[0].user}⠀⠀⠀⠀⠀||${res_report.data[0].userID}||`)
+                .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${res_report.data[0].user} ${is_verified}⠀⠀⠀⠀⠀||${res_report.data[0].userID}||`)
                 .setThumbnail("https://cdn.discordapp.com/avatars/" + res_discord.data.id + "/" + res_discord.data.avatar + ".png")
                 .setImage('https://i.imgur.com/TlNvTNW.png')
                 .addField("<:stt_ticket:894863362503110678> Reported User Name", `${res_report.data[0].reportedUser}`,true)
@@ -462,6 +501,7 @@ client.on("interactionCreate", async (interaction, message) => {
         console.log("WEBHOOK SENDED !")
           //
         })
+      })
         })
     })
 }
@@ -513,7 +553,7 @@ if(interaction.customId === "report_deny"){
                    
                 ] 
         })     
-      })
+      
       //
         let headersList1 = {
             "Accept": "*/*",
@@ -530,10 +570,18 @@ if(interaction.customId === "report_deny"){
             if(err) return;
           })
           .then(function (res_discord) {
+            //
+            let is_verified = ""
+                console.log(ress.data[0].bdg_verify)
+              if(ress.data[0].bdg_verify == true) {
+                is_verified = "<:stt_verified:896337630663409704>"
+              }
+              console.log(is_verified)
+            //
         const report_denied_log_embed = new Discord.MessageEmbed()
           .setColor(`${bot_color}`)
             .setTitle("Report | ID: " + res_report.data[0].reportID)
-            .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${res_report.data[0].user}⠀⠀⠀⠀⠀||${res_report.data[0].userID}||`)
+            .setDescription(`<:stt_ticket:894863362503110678> **User Name**⠀⠀⠀⠀⠀<:stt_id:903032294590255106> **User ID** \n ${res_report.data[0].user} ${is_verified}⠀⠀⠀⠀⠀||${res_report.data[0].userID}||`)
             .setThumbnail("https://cdn.discordapp.com/avatars/" + res_discord.data.id + "/" + res_discord.data.avatar + ".png")
             .setImage('https://i.imgur.com/TlNvTNW.png')
             .addField("<:stt_ticket:894863362503110678> Reported User Name", `${res_report.data[0].reportedUser}`,true)
@@ -562,6 +610,7 @@ if(interaction.customId === "report_deny"){
               })      
               console.log("Report Denied and Deleted !") 
     })
+  })
     })
 })
 }
