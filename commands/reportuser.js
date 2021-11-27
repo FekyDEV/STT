@@ -58,7 +58,8 @@ module.exports = {
                 username: interaction.user.tag,
                 have_report: false,
                 xp: 0,
-                bdg_early: false
+                bdg_early: false,
+                
               })
               console.log("NO DATA")
          }     
@@ -304,12 +305,21 @@ client.on("interactionCreate", async (interaction, message) => {
                     ephemeral: true
                 })
                 axios.get('http://' + ip + ':7000/users/id/' + interaction.user.id)
-            .then((res_data) => {   
+            .then((res_data) => {  
+              //
+              console.log(res_data.data[0].user_total_reports)
+              console.log(res_data.data[0].user_total_reports +1)
+              console.log(res_data.data[0].user_total_reports + 1)
+              console.log(res_data.data[0].user_total_reports + "1")
+              //
+              
               axios({
                 method: 'patch',
                 url: 'http://' + ip + ':7000/users/id/' + interaction.user.id,
                 data: [    
-                        { "propName": "have_report", "value": true }
+                        { "propName": "have_report", "value": true },
+                        { "propName": "user_total_reports", "value": res_data.data[0].user_total_reports + 1 }
+                         
                       ] 
               })      
               console.log("User have now a new report !")
@@ -353,14 +363,15 @@ client.on("interactionCreate", async (interaction, message) => {
      } // KONIEC IF
 
      if(interaction.customId === "report_accept"){
+       console.log(interaction.user.id)
         console.log("NEW INTERACTION: Report Accepted")
         //
         const accepted_date = moment().utcOffset(+1).format("DD/MM/YYYY - HH:mm:ss");
         //
         //console.log(interaction)
-        console.log('-----------------------------------------')
+        //console.log('-----------------------------------------')
         //console.log(interaction.message)
-        console.log(interaction.message.content)
+        //console.log(interaction.message.content)
         //
         axios.get('http://' + ip + ':7000/users/id/' + interaction.user.id)
         .then((res) => {   
@@ -398,6 +409,18 @@ client.on("interactionCreate", async (interaction, message) => {
                     })      
                     console.log("Report Acccepted !") 
             //
+        axios.get('http://' + ip + ':7000/users/id/' + res_report.data[0].userID)
+        .then((ress) => { 
+        axios({
+          method: 'patch',
+          url: 'http://' + ip + ':7000/users/id/' + res_report.data[0].userID,
+          data: [    
+                  { "propName": "user_approved_reports", "value": ress.data[0].user_approved_reports + 1 }
+                   
+                ] 
+        })     
+      })
+      //
             let headersList1 = {
                 "Accept": "*/*",
                 "User-Agent": "Thunder Client (https://www.thunderclient.io)",
@@ -448,7 +471,7 @@ if(interaction.customId === "report_deny"){
     //
     const denied_date = moment().utcOffset(+1).format("DD/MM/YYYY - HH:mm:ss");
     //
-    //console.log(interaction)
+    console.log(interaction.user.id)
     console.log('-----------------------------------------')
     //console.log(interaction.message)
     console.log(interaction.message.content)
@@ -480,6 +503,18 @@ if(interaction.customId === "report_deny"){
                       })      
                       console.log("User have now new report !")
         //
+        axios.get('http://' + ip + ':7000/users/id/' + res_report.data[0].userID)
+        .then((ress) => { 
+        axios({
+          method: 'patch',
+          url: 'http://' + ip + ':7000/users/id/' + res_report.data[0].userID,
+          data: [    
+                  { "propName": "user_denied_reports", "value": ress.data[0].user_denied_reports + 1 }
+                   
+                ] 
+        })     
+      })
+      //
         let headersList1 = {
             "Accept": "*/*",
             "User-Agent": "Thunder Client (https://www.thunderclient.io)",
