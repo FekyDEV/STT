@@ -143,12 +143,12 @@ if(interaction.customId == "select-profile") {
     const profile = require("./commands/profile.js")
          interaction.values.forEach(async value => {
           if(value == 'profile_staff_embed') {
-            if(value == 'aboutbot_staff_embed') {
-            
+                console.log(res.data[0])
+                console.log("------------------------")
+                console.log(res.data[0].is_admin)
+
             if(res.data[0].is_admin == true) {
-                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
-            }
-               
+                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })   
             } else {
                 return interaction.reply({
                     content: "You don't have a permissions !",

@@ -157,7 +157,7 @@ if(!res_bl.data[0]) {
      .setColor(bot_color)
      .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
-     .addField("<:stt_ticket:894863362503110678> Username", "> " + res.data[0].username + "  " + bl_status, true)
+     .addField("<:stt_ticket:894863362503110678> Username", "> " + bl_status + "  " + res.data[0].username + "  ", true)
      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
      .addField("Badges - From STT", "> " + bdgs, false)
      .addField("Level", "> " + user_lvl, true)
