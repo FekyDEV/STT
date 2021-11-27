@@ -29,7 +29,7 @@ let headersList544 = {
     "Authorization": "Bot ODgwMDQ3NzQ4NjA1NDQ0MTU3.YSYmVQ.mnDEfwBTaoJqT53U6vGbb6F11GI" 
    }
    let reqOptions5884 = {
-     url: "http://${ip}:5000/servers/sid/" + guildMember.guild.id,
+     url: `http://${ip}:5000/servers/sid/` + guildMember.guild.id,
      method: "GET",
      headers: headersList5884,
    }
@@ -42,7 +42,7 @@ let headersList544 = {
    }
 //
    let reqOptions45 = {
-     url: "http://${ip}:4000/reports/id/" + guildMember.user.id,
+     url: `http://${ip}:4000/reports/id/` + guildMember.user.id,
      method: "GET",
      headers: headersList45,
    }
