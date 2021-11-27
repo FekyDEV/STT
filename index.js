@@ -126,13 +126,14 @@ if(interaction.customId == "select-aboutbot") {
             if(value == 'aboutbot_classic_embed') return console.log("Nothing to do..-")
             
                 if(value == 'aboutbot_staff_embed') {
-                    if(res.data[0].is_admin == false)
+                    if(res.data[0].is_admin == true) {
+                        interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
+                    }
+                } else {
                     return interaction.reply({
                         content: "You don't have a permissions !",
                         ephemeral: true
                     });
-                } else {
-                    interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
                 }
             
         });
@@ -140,18 +141,19 @@ if(interaction.customId == "select-aboutbot") {
 //////////////////////////////////////////////////////////////////////////////////////////////////// PROFILE - SELECT MENU
 if(interaction.customId == "select-profile") {
     const profile = require("./commands/profile.js")
-      console.log(profile.embed)
          interaction.values.forEach(async value => {
           if(value == 'profile_staff_embed') {
             if(value == 'aboutbot_staff_embed') {
             
-            if(res.data[0].is_admin == false)
+            if(res.data[0].is_admin == true) {
+                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
+            }
+               
+            } else {
                 return interaction.reply({
                     content: "You don't have a permissions !",
                     ephemeral: true
                 });
-            } else {
-                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })
             }
         }
             if(value == 'profile_classic_embed') {
