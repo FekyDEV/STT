@@ -61,15 +61,17 @@ if(!res.data[0]) {
     //
 if(res.data[0]) {
 //
+let is_verified = ""
+if(res.data[0].bdg_verify == true) {
+  is_verified = '<:stt_verified:896337630663409704>  '
+} 
+//
 let bdgs = ""
 if(res.data[0].bdg_dev == true) {
   bdgs += '<:stt_verified_dev:896337630499848263>  '
 } 
  if(res.data[0].bdg_early == true) {
   bdgs +=  '<:stt_early_supporter:901398398828154880>  '
-} 
- if(res.data[0].bdg_verify == true) {
-  bdgs += '<:stt_verified:896337630663409704>  '
 } 
  if(res.data[0].bdg_h1 == true) {
   bdgs += '<:stt_report_huner_1:896337630399189002>  '
@@ -158,7 +160,7 @@ if(!res_bl.data[0]) {
      .setColor(bot_color)
      .setTitle("<:stt_shop:896337630378205196> Your STT Profile") 
      .setDescription("<:stt_beta:899703562316181526> __Testing Version (BETA)__")
-     .addField("<:stt_ticket:894863362503110678> Username", "> " + bl_status + "  " + res.data[0].username + "  ", true)
+     .addField("<:stt_ticket:894863362503110678> Username", "> " + bl_status + "  " + res.data[0].username + "  " + is_verified, true)
      .addField("<:stt_id:903032294590255106> User ID", "||" + res.data[0].id + "||", true)
      .addField("Badges - From STT", "> " + bdgs, false)
      .addField("Level", "> " + user_lvl, true)
