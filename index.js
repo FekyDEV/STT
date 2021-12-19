@@ -22,14 +22,28 @@ const client = new Client({
 		intents: [
 			Intents.FLAGS.GUILDS,
 			Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_VOICE_STATES,
             Intents.FLAGS.GUILD_MEMBERS,
             Intents.FLAGS.GUILD_INTEGRATIONS,
             Intents.FLAGS.GUILD_MEMBERS 
 		]
 	});
 //
-//
+// MONGODB LOAD (From Sloth)
+const chalk = require('chalk');
+async function loadDB() {
+	const mongoose = require('mongoose');
+	await mongoose.connect("mongodb://localhost/stt", {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}).then(() =>{
+		console.log(chalk.green('Connected to the database!'));
+	}).catch((err) => {
+		console.log(err);
+	});
+}
+
+loadDB();
+// END (MONGODB)
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
 const commands = [];
