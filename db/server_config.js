@@ -1,88 +1,58 @@
 const mongoose = require('mongoose');
 
-const user_profile = new mongoose.Schema({
+const config = new mongoose.Schema({
     position: {
         type: Number,
         required: false
     },
-    user_id: {
+	sid: {
         type: String,
-        required: true
+        required: false
     },
-    user_name: {
+    owner_id: {
         type: String,
-        required: true
+        required: false
     },
-    is_admin: {
-        type: Boolean,
+    premium: {
+        type: String,
         required: false,
-        default: false
+        default: "false"
     },
-    blacklists: {
+    autoban: {
+        type: String,
+        required: false,
+        default: "disable"
+    },
+    autorole: {
+        type: String,
+        required: false,
+        default: "disable"
+    },
+    autorole_role: {
+        type: String,
+        required: false,
+        default: "none"
+    },
+    alt_detection: {
+        type: String,
+        required: false,
+        default: "disable"
+    },
+    alt_days: {
         type: Number,
         required: false,
-        default: 0
+        default: "1"
     },
-    bdg_h1: {
-        type: Boolean,
+    log_status: {
+        type: String,
         required: false,
-        default: false
+        default: "disable"
     },
-    bdg_h2: {
-        type: Boolean,
+    log_channel: {
+        type: String,
         required: false,
-        default: false
-    },
-    bdg_h3: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    bdg_verify: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    bdg_dev: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    bdg_early: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    all_reports: {
-        type: Number,
-        required: false,
-        default: 0
-    },
-    aproved_reports: {
-        type: Number,
-        required: false,
-        default: 0
-    },
-    denied_reports: {
-        type: Number,
-        required: false,
-        default: 0
-    },
-    level: {
-        type: Number,
-        required: false,
-        default: 1
-    },
-    xp: {
-        type: Number,
-        required: false,
-        default: 0
-    },
-    have_report: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
+        default: "none"
+    }
 });
 
-module.exports = Item = mongoose.model("user_profile", user_profile);
+module.exports = Item = mongoose.model("config", config);
