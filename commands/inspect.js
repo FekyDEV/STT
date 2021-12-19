@@ -91,8 +91,7 @@ module.exports = {
 }
 
 async function getReport(user) {
-    //if (user.report && user.cache?.report) return user.report;
-    let doc = await report.findOne({ userID: { $eq: user.id } });
+    let doc = await report.findOne({ reportedUserID: { $eq: user.id } });
     if (!doc) {
         console.log("Nevermind...")
     }

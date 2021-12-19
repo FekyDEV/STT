@@ -9,10 +9,6 @@ const user_profile = new mongoose.Schema({
         type: String,
         required: true
     },
-    user_name: {
-        type: String,
-        required: true
-    },
     is_admin: {
         type: Boolean,
         required: false,

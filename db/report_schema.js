@@ -7,9 +7,7 @@ const report = new mongoose.Schema({
   status: { type: String, required: false, default: "pending" },
   // User Info
   userID: { type: String, required: false, default: "none" },
-  user: { type: String, required: false, default: "none" },
   // Reported User Info
-  reportedUser: { type: String, required: false, default: "none" },
   reportedUserID: { type: String, required: false, default: "none" },
   reportMessage: { type: String, required: false, default: "none" },
   reportProof: { type: String, required: false, default: "none" },

@@ -150,9 +150,7 @@ if(interaction.customId == "select-profile") {
 
         });
     }
-
-
-    }
+}
     
 // OTHER STUFF
     if(!interaction.isCommand()) return;
