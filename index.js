@@ -1,42 +1,25 @@
-/** @format */
-
-//
-//const Discord = require("discord.js");
-const config = require("./Data/config.json");
-//
-const ip = '5.249.164.143'
-//
-const bot_color = '0x370595';
-//
-const staff_member_role_id = '603505971507101698';
-const author_role_id = '603505971507101698';
-// SLASH
 const fs = require('fs');
-const axios = require("axios")
-const Discord = require("discord.js");
 const { REST } = require('@discordjs/rest'); // OVERENE
 const { Routes } = require('discord-api-types/v9'); // OVERENE
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { Client, Intents, Collection } = require("discord.js");
+const { Discord, Client, Intents, Collection, MessageSelectMenu,MessageActionRow } = require("discord.js");
 const client = new Client({
 		intents: [
 			Intents.FLAGS.GUILDS,
 			Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_MEMBERS,
             Intents.FLAGS.GUILD_INTEGRATIONS,
             Intents.FLAGS.GUILD_MEMBERS 
 		]
 	});
-//
+const config = require("./Data/config.json");
+
 // MONGODB LOAD (From Sloth)
-const chalk = require('chalk');
 async function loadDB() {
 	const mongoose = require('mongoose');
 	await mongoose.connect("mongodb://localhost/stt", {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	}).then(() =>{
-		console.log(chalk.green('Connected to the database!'));
+		console.log('Connected to the database...');
 	}).catch((err) => {
 		console.log(err);
 	});
@@ -44,6 +27,7 @@ async function loadDB() {
 
 loadDB();
 // END (MONGODB)
+
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 
 const commands = [];
@@ -55,7 +39,7 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 	client.commands.set(command.data.name, command);
 }
-//
+
 // ? Event Handler
 const eventFiles = fs.readdirSync(__dirname + '/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
@@ -66,7 +50,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args, client));
 	}
 }
-//
 
 client.on("ready", () => {
     console.log("Bot is online!")
@@ -77,9 +60,8 @@ client.on("ready", () => {
         guidess: guidess,
         userss: userss
       });
-      //
-
 });
+
 client.on("guildCreate", (guild) => {
     const clientId = client.user.id
     const guildId2 = guild.id;
@@ -102,7 +84,6 @@ client.on("guildCreate", (guild) => {
         }
     })();
 })
-//
 
 client.on("interactionCreate", async (interaction, message) => {
     console.log(interaction.customId)
@@ -127,86 +108,53 @@ client.on("interactionCreate", async (interaction, message) => {
             console.error(error);
         }
     })();
-if(interaction.isCommand()) {
-} else if (interaction.isSelectMenu()) {
+ if (interaction.isSelectMenu()) {
 
 //--// ABOUTBOT //--//´
-axios.get('http://' + ip + ':7000/users/id/' + interaction.user.id)
-             .then((res) => { 
+const data = await getUser(interaction.user.id);
+
 if(interaction.customId == "select-aboutbot") {
     const aboutbot = require("./commands/aboutbot.js")//
          interaction.values.forEach(async value => {
             //
             if(value == 'aboutbot_classic_embed') return console.log("Nothing to do..-")
-            
                 if(value == 'aboutbot_staff_embed') {
-                    if(res.data[0].is_admin == true) {
-                        interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
-                    }
-                } else {
-                    return interaction.reply({
+                    if(!data || data.is_admin !== true) {
+                        return interaction.reply({
                         content: "You don't have a permissions !",
                         ephemeral: true
                     });
+                } else if(data.is_admin == true) {
+                    interaction.reply({ ephemeral: true, embeds: [ aboutbot.embed ] })
                 }
-            
+            }
         });
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////// PROFILE - SELECT MENU
+
 if(interaction.customId == "select-profile") {
     const profile = require("./commands/profile.js")
          interaction.values.forEach(async value => {
           if(value == 'profile_staff_embed') {
-                console.log(res.data[0])
-                console.log("------------------------")
-                console.log(res.data[0].is_admin)
-
-            if(res.data[0].is_admin == true) {
-                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })   
-            } else {
+            if(!data || data.is_admin !== true) {
                 return interaction.reply({
                     content: "You don't have a permissions !",
                     ephemeral: true
                 });
-            }
+            } else if(data.is_admin == true) {
+                interaction.reply({ ephemeral: true, embeds: [ profile.embed ] })   
+            } 
         }
             if(value == 'profile_classic_embed') {
                  interaction.update({ embeds: [ profile.embed2 ]  })
             }
-            
 
         });
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////// BAN APPEAL - BUTTONS
-    /*if(interaction.customId == "confirm_butn"){
-        console.log("Ban Appeal sended 1 !")
-    }
-    if(interaction.customId === "confirm_butn"){
-        console.log("Ban Appeal sended 2 !")
-    }
-    //
-    if(interaction.customId == 'confirm_butn'){
-        console.log("Ban Appeal sended 3 !")
-    }
-    if(interaction.customId === 'confirm_butn'){
-        console.log("Ban Appeal sended 4 !")
-    }
 
 
-    if(interaction.customId == "3"){
-        console.log("Ban Appeal denied !")
-    }*/
-////////////////////////////////////////////////////////////////////////////////////////////////////
-})
-//--//  //--//
     }
     
-/////////////// REPORT USER 
-//    const reportuser = require("./commands/reportuser.js")
-//if(interaction.customId === "confirm_button"){
-//    await interaction.reply({ embeds: [ reportuser.report_user_embed ], ephemeral: true, components: [ reportuser.report_link ] })
-//  }
-///
+// OTHER STUFF
     if(!interaction.isCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
@@ -224,6 +172,16 @@ if(interaction.customId == "select-profile") {
         });
     }
 });
+
+const user_profile = require("./db/user_schema.js")
+async function getUser(usr) {
+    let doc = await user_profile.findOne({ user_id: { $eq: usr.id } });
+    if (!doc) {
+        console.log("Nevermind...")
+    }
+    user_profile.usr = doc;
+    return doc;
+}
 
 client.login(config.token);
  
