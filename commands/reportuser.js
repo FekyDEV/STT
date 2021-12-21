@@ -42,7 +42,14 @@ module.exports = {
         getUser(int.user) // CHECKING IF USER'S PROFILE IS CREATED...
 
         const data = await getReport(int.options.getString('userid'))
-            
+        const user_data = await getUser(int.user)
+        console.log("User data: %s", user_data.have_report)
+
+        if(user_data.have_report == true) {
+            int.reply({content:'You already have Pending Report !'})
+                return;
+        }
+
        if(!data) {
             console.log("No data..")
             createReport(int.options.getString('userid'))
@@ -83,14 +90,14 @@ module.exports = {
        } else {
         console.log("Data: %s", data)
         console.log("Satus: %s", data.status)
-
-        if(data.status == "pending") {
+          if(data.status == "pending") {
             int.reply({content:'User is already Reported !'})
                 return;
         } else if(data.status == "accepted") {
             int.reply({content:'User is already Blacklisted !'})
                 return;
         }
+
     }
        
 // FUNKCIE
@@ -131,63 +138,7 @@ function report_makeid() {
     return text;
   }
 
-  async function editReport(usr_id, tochange, newData) {
-    const doc = await getReport(usr_id);
-    switch (tochange) {
-        case 0: { // status
-            await doc.updateOne({ enabled: newData });
-            usr_id.report.enabled = newData;
-        }
-            break;
-        case 1: { // admin
-            await doc.updateOne({ channel: newData });
-            usr_id.report.channel = newData;
-        }
-            break;
-        case 2: { // adminComment
-            await doc.updateOne({ text: newData });
-            usr_id.report.text = newData
-        }
-            break;
-        case 3: { // timeChanged
-            await doc.updateOne({ mention: newData });
-            usr_id.report.mention = newData
-        }
-            break;
-        default:
-            throw new Error("Nope");
-    }
-    return true;
-}
 
-async function editUser(usr_id, tochange, newData) {
-    const doc = await getUser(usr_id);
-    switch (tochange) {
-        case 0: { // have_report
-            await doc.updateOne({ enabled: newData });
-            usr_id.user_profile.enabled = newData;
-        }
-            break;
-        case 1: { // all_reports
-            await doc.updateOne({ channel: newData });
-            usr_id.user_profile.channel = newData;
-        }
-            break;
-        case 2: { // aproved_reports
-            await doc.updateOne({ text: newData });
-            usr_id.user_profile.text = newData
-        }
-            break;
-        case 3: { // denied_reports
-            await doc.updateOne({ mention: newData });
-            usr_id.user_profile.mention = newData
-        }
-            break;
-        default:
-            throw new Error("Nope");
-    }
-    return true;
-}
 
 async function getUser(usr) {
     let doc = await user_profile.findOne({ user_id: { $eq: usr.id } });
