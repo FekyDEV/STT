@@ -7,7 +7,7 @@ const user_profile = new mongoose.Schema({
     },
     user_id: {
         type: String,
-        required: true
+        required: false
     },
     is_admin: {
         type: Boolean,
@@ -54,12 +54,27 @@ const user_profile = new mongoose.Schema({
         required: false,
         default: 0
     },
-    aproved_reports: {
+    accepted_reports: {
         type: Number,
         required: false,
         default: 0
     },
     denied_reports: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    admin_all_reports: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    admin_accepted_reports: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    admin_denied_reports: {
         type: Number,
         required: false,
         default: 0
